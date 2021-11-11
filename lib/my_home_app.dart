@@ -86,12 +86,32 @@ class _MyHomeAppState extends State<MyHomeApp> {
                         height: 200,
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                            color: Colors.red,
+                            color: Colors.purple,
                             shape: BoxShape.rectangle,
                             borderRadius: BorderRadius.circular(10.0)
                         ),
-                        child: const Center(
-                          child: Text("aaaaa")
+                        child: Center(
+                          child: Image.asset(
+                              "assets/image2.png",
+                              repeat: ImageRepeat.repeatX,
+                          )
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 200,
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.orange,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(10.0)
+                        ),
+                        child: Center(
+                            child: Image.asset(
+                                "assets/image.jpg",
+                                width:300,
+                                height:300
+                            )
                         ),
                       )
                     ],
