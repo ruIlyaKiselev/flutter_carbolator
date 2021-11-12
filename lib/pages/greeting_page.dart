@@ -9,7 +9,6 @@ class GreetingWidget extends StatelessWidget {
     return MaterialApp(
         home: Scaffold(
             backgroundColor: const Color(0xff006e91),
-            appBar: null,
             body: SizedBox(
                 width: double.infinity,
                 child: Column(
@@ -31,6 +30,7 @@ class GreetingWidget extends StatelessWidget {
                           style: TextStyle(
                             fontFamily: "Montserrat",
                             color: Color(0xffcdf2ff),
+                            fontWeight: FontWeight.w800,
                             fontSize: 40
                           ),
                       ),

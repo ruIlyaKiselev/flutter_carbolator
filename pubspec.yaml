@@ -30,5 +30,8 @@ flutter:
         - asset: assets/Montserrat-SemiBold.ttf
           weight: 600
           style: normal
+        - asset: assets/Montserrat-ExtraBold.ttf
+          weight: 800
+          style: normal
   assets:
     - assets/
