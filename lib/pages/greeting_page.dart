@@ -5,30 +5,41 @@ class GreetingWidget extends StatelessWidget {
   const GreetingWidget({Key? key}) : super(key: key);
 
   @override
-
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
             backgroundColor: const Color(0xff006e91),
             appBar: null,
-            body: SingleChildScrollView(
+            body: SizedBox(
+                width: double.infinity,
                 child: Column(
-                  // mainAxisSize: MainAxisSize.min,
+                    // mainAxisSize: MainAxisSize.min,
                     children: [
-                      Align(
-                          alignment: Alignment.bottomRight,
-                          child: Center(
-                              child: Image.asset(
-                                "assets/greeting_image.png",
-                                width: 250,
-                                height: 250,
-                              )
-                          )
+                      Container(
+                        height: 150,
+                      ),
+                      Image.asset(
+                        "assets/greeting_image.png",
+                        width: 250,
+                        height: 250,
+                      ),
+                      Expanded(
+                          child: Container()
+                      ),
+                      const Text(
+                          "КАРБОЛЯТОР",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            color: Color(0xffcdf2ff),
+                            fontSize: 40
+                          ),
+                      ),
+                      Container(
+                        height: 50,
                       ),
                     ]
                 )
             )
-
         )
     );
   }
