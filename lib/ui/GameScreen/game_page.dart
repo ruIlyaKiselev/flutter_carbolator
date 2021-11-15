@@ -58,6 +58,9 @@ Widget foregroundContent() {
 }
 
 Widget whiteBoxContent() {
+
+  ExamplePageView _pageView = ExamplePageView();
+
   return  Expanded(
     child: Container(
       width: double.infinity,
@@ -74,15 +77,15 @@ Widget whiteBoxContent() {
       ),
       child: Column(
         children: [
-          const Expanded(child: ExamplePageView()),
-          bottomButtons()
+          Expanded(child: _pageView),
+          bottomButtons(_pageView.controller)
         ],
       ),
     ),
   );
 }
 
-Widget bottomButtons() {
+Widget bottomButtons(PageController pageController) {
   return Row(
     children: [
       Container (
@@ -93,7 +96,10 @@ Widget bottomButtons() {
         ),
         child: Center(
           child: IconButton(
-            onPressed: () => { print("Prev") },
+            onPressed: () => {
+              print("Prev"),
+              pageController.previousPage(duration: const Duration(microseconds: 300), curve: Curves.easeIn)
+            },
             icon: Image.asset("assets/chevronprev.png"),
           ),
         ),
@@ -107,7 +113,10 @@ Widget bottomButtons() {
         ),
         child: Center(
           child: IconButton(
-            onPressed: () => { print("Next") },
+            onPressed: () => {
+              print("Next"),
+              pageController.nextPage(duration: const Duration(microseconds: 300), curve: Curves.easeIn)
+            },
             icon: Image.asset("assets/chevronnext.png"),
           ),
         ),
@@ -117,14 +126,18 @@ Widget bottomButtons() {
 }
 
 class ExamplePageView extends StatelessWidget {
-  const ExamplePageView({Key? key}) : super(key: key);
+
+  ExamplePageView({Key? key}) : super(key: key);
+
+  late final PageController _controller = PageController(initialPage: 0);
+  PageController get controller => _controller;
 
   @override
   Widget build(BuildContext context) {
-    final PageController controller = PageController(initialPage: 0);
+
     return PageView(
       scrollDirection: Axis.horizontal,
-      controller: controller,
+      controller: _controller,
       children: const <Widget>[
         Center(
           child: Text('First Page'),
