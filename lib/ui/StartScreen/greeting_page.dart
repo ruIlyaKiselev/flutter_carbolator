@@ -1,18 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:some_lessons_from_youtube/ui/StartScreen/start_page.dart';
 
 class GreetingWidget extends StatelessWidget {
-  const GreetingWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-            backgroundColor: const Color(0xff006e91),
-            body: SizedBox(
+    return Scaffold(
+        backgroundColor: const Color(0xff006e91),
+        body: InkWell(
+            onTap: () => {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => StartWidget()),
+              )
+            },
+            child: SizedBox(
                 width: double.infinity,
                 child: Column(
-                    // mainAxisSize: MainAxisSize.min,
+                  // mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
                         height: 150,
@@ -26,13 +32,13 @@ class GreetingWidget extends StatelessWidget {
                           child: Container()
                       ),
                       const Text(
-                          "КАРБОЛЯТОР",
-                          style: TextStyle(
+                        "КАРБОЛЯТОР",
+                        style: TextStyle(
                             fontFamily: "Montserrat",
                             color: Color(0xffcdf2ff),
                             fontWeight: FontWeight.w800,
                             fontSize: 40
-                          ),
+                        ),
                       ),
                       Container(
                         height: 50,

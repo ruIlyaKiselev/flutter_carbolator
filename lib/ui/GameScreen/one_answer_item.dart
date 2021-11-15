@@ -20,7 +20,7 @@ class _MyState extends State<OneAnswerItem>
     return Column(
       children: [
         ListTile(
-          title: Text("Male"),
+          title: const Text("Male"),
           leading: Radio(
             value: 1,
             groupValue: val,

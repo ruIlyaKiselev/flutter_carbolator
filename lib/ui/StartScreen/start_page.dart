@@ -1,27 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:some_lessons_from_youtube/ui/GameScreen/game_page.dart';
 
 class StartWidget extends StatelessWidget {
   const StartWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Material(
-          type: MaterialType.transparency,
-          child: DecoratedBox(
-              decoration: const BoxDecoration(
-                image: DecorationImage(image: AssetImage("assets/background3.png"), fit: BoxFit.cover),
-              ),
-              child: foregroundContent()
-          )
-      ),
+    return Material(
+        type: MaterialType.transparency,
+        child: DecoratedBox(
+            decoration: const BoxDecoration(
+              image: DecorationImage(image: AssetImage("assets/background3.png"), fit: BoxFit.cover),
+            ),
+            child: foregroundContent(context)
+        )
+
     );
   }
 }
 
-Widget foregroundContent() {
+Widget foregroundContent(BuildContext context) {
   return Column(
       children: [
         Container(
@@ -63,7 +62,7 @@ Widget foregroundContent() {
               )
             ]
         ),
-        whiteBoxContent(),
+        whiteBoxContent(context),
         Container(
           height: 50,
         ),
@@ -71,7 +70,7 @@ Widget foregroundContent() {
   );
 }
 
-Widget whiteBoxContent() {
+Widget whiteBoxContent(BuildContext context) {
   return  Expanded(
     child: Container(
       width: double.infinity,
@@ -104,7 +103,12 @@ Widget whiteBoxContent() {
           SizedBox(
               width: double.infinity,
               child: TextButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => GameWidget()),
+                  )
+                },
                 style: TextButton.styleFrom(
                     primary: Colors.white,
                     backgroundColor: const Color(0xFF4f4f4f),

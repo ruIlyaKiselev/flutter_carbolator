@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:some_lessons_from_youtube/ui/GameScreen/game_page.dart';
-import 'package:some_lessons_from_youtube/ui/StartScreen/start_page.dart';
-
-
-import 'pages/my_home_app.dart';
+import 'package:some_lessons_from_youtube/ui/StartScreen/greeting_page.dart';
 
 void main() {
-  runApp(const GameWidget());
+  runApp(
+      MaterialApp(debugShowCheckedModeBanner: false,
+        home: GreetingWidget(),
+      )
+  );
 }
