@@ -74,7 +74,7 @@ Widget whiteBoxContent() {
       ),
       child: Column(
         children: [
-          Expanded(child: OneAnswerItem(),),
+          const Expanded(child: ExamplePageView()),
           bottomButtons()
         ],
       ),
@@ -114,4 +114,28 @@ Widget bottomButtons() {
       ),
     ],
   );
+}
+
+class ExamplePageView extends StatelessWidget {
+  const ExamplePageView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final PageController controller = PageController(initialPage: 0);
+    return PageView(
+      scrollDirection: Axis.horizontal,
+      controller: controller,
+      children: const <Widget>[
+        Center(
+          child: Text('First Page'),
+        ),
+        Center(
+          child: Text('Second Page'),
+        ),
+        Center(
+          child: Text('Third Page'),
+        )
+      ],
+    );
+  }
 }
