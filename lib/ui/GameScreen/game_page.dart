@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_item.dart';
 
 class GameWidget extends StatelessWidget {
   const GameWidget({Key? key}) : super(key: key);
@@ -137,14 +138,14 @@ class ExamplePageView extends StatelessWidget {
     return PageView(
       scrollDirection: Axis.horizontal,
       controller: _controller,
-      children: const <Widget>[
+      children: <Widget>[
         Center(
-          child: Text('First Page'),
+          child: CustomRadioButton(size: 16, text: "Some Text"),
         ),
-        Center(
+        const Center(
           child: Text('Second Page'),
         ),
-        Center(
+        const Center(
           child: Text('Third Page'),
         )
       ],
