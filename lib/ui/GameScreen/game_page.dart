@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:some_lessons_from_youtube/ui/GameScreen/one_answer_item.dart';
 
 class GameWidget extends StatelessWidget {
   const GameWidget({Key? key}) : super(key: key);
@@ -88,37 +87,37 @@ Widget whiteBoxContent() {
 Widget bottomButtons(PageController pageController) {
   return Row(
     children: [
-      Container (
-        width: 75,
-        decoration: const BoxDecoration(
-            color: Color(0xFF4f4f4f),
-            borderRadius: BorderRadius.all(Radius.circular(8))
-        ),
-        child: Center(
-          child: IconButton(
-            onPressed: () => {
-              print("Prev"),
-              pageController.previousPage(duration: const Duration(microseconds: 300), curve: Curves.easeIn)
-            },
-            icon: Image.asset("assets/chevronprev.png"),
+      TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: const Color(0xFF4f4f4f),
+          elevation: 8,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
+        ),
+        onPressed: () => {
+          pageController.previousPage(duration: const Duration(microseconds: 1000), curve: Curves.linear)
+        },
+        child: Image.asset(
+          "assets/chevronprev.png",
+          scale: 3,
         ),
       ),
       Expanded(child: Container()),
-      Container (
-        width: 75,
-        decoration: const BoxDecoration(
-            color: Color(0xFF4f4f4f),
-            borderRadius: BorderRadius.all(Radius.circular(8))
-        ),
-        child: Center(
-          child: IconButton(
-            onPressed: () => {
-              print("Next"),
-              pageController.nextPage(duration: const Duration(microseconds: 300), curve: Curves.easeIn)
-            },
-            icon: Image.asset("assets/chevronnext.png"),
+      TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: const Color(0xFF4f4f4f),
+          elevation: 8,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
+        ),
+        onPressed: () => {
+          pageController.nextPage(duration: const Duration(microseconds: 1000), curve: Curves.linear)
+        },
+        child: Image.asset(
+          "assets/chevronnext.png",
+          scale: 3,
         ),
       ),
     ],
