@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/multiple_answer_item.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_item.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/selector_item.dart';
 
 class GameWidget extends StatelessWidget {
   const GameWidget({Key? key}) : super(key: key);
@@ -140,13 +142,13 @@ class ExamplePageView extends StatelessWidget {
       controller: _controller,
       children: <Widget>[
         Center(
-          child: CustomRadioButton(size: 16, text: "Some Text"),
+          child: CustomRadioButton(size: 16, text: "Custom Radio Button"),
         ),
-        const Center(
-          child: Text('Second Page'),
+         Center(
+          child: CustomCheckBox(size: 32, text: "Custom CheckBox"),
         ),
-        const Center(
-          child: Text('Third Page'),
+        Center(
+          child: CustomSelector(size: 32, min: 0, max: 5, text: "Some text", secondText: "Additional info",),
         )
       ],
     );

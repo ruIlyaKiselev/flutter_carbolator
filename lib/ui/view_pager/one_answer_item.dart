@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -6,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class CustomRadioButton extends StatefulWidget {
 
-  CustomRadioButton({required this.size, required this.text});
+  CustomRadioButton({Key? key, required this.size, required this.text}) : super(key: key);
 
   bool isSelected = false;
   String text = "";
