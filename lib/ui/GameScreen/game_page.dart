@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:some_lessons_from_youtube/domain/answer.dart';
 import 'package:some_lessons_from_youtube/domain/question_type.dart';
 import 'package:some_lessons_from_youtube/repository/carbolator_repository.dart';
 import 'package:some_lessons_from_youtube/repository/carbolator_repository_impl.dart';
@@ -162,10 +163,31 @@ class ExamplePageView extends StatelessWidget {
       }
     });
 
-    return PageView(
-      scrollDirection: Axis.horizontal,
-      controller: _controller,
-      children: wigets
+    // void collectAnswers() {
+    //   List<Answer> answers = [];
+    //
+    //   wigets.forEach((element) {
+    //     answers.add(
+    //       Answer(
+    //           id: element.id,
+    //           selectedAnswers: selectedAnswers
+    //       );
+    //     );
+    //   });
+    // }
+
+    return Stack(
+      children: [
+        TextButton(
+            onPressed: () => {},
+            child: Container()
+        ),
+        PageView(
+            scrollDirection: Axis.horizontal,
+            controller: _controller,
+            children: wigets
+        )
+      ],
     );
   }
 }
