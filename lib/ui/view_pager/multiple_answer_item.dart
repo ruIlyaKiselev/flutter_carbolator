@@ -36,16 +36,19 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
             painter: CheckBoxPainter(isSelected: widget.isSelected),
           ),
           Expanded(
-              child: Text(
-                widget.text,
-                style: TextStyle(
-                    fontFamily: "Montserrat",
-                    color: Color(0xFF4f4f4f),
-                    fontWeight: FontWeight.w800,
-                    fontSize: widget.size * 2 / 3
+              child: Container(
+                padding: EdgeInsets.all(widget.size / 4),
+                child: Text(
+                  widget.text,
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      color: const Color(0xFF4f4f4f),
+                      fontWeight: FontWeight.w800,
+                      fontSize: widget.size * 2 / 3
+                  ),
+                  maxLines: 6,
+                  textAlign: TextAlign.start,
                 ),
-                maxLines: 6,
-                textAlign: TextAlign.start,
               )
           )
         ],
@@ -74,7 +77,7 @@ class CheckBoxPainter extends CustomPainter {
               Radius.circular(min(size.width, size.height) * 5 / 16)
           ),
           Paint()
-            ..color = Color(0xFF4f4f4f)
+            ..color = const Color(0xFF4f4f4f)
       );
       canvas.drawRRect(
           RRect.fromRectAndRadius(
@@ -98,7 +101,7 @@ class CheckBoxPainter extends CustomPainter {
               Radius.circular(min(size.width, size.height) / 8)
           ),
           Paint()
-            ..color = Color(0xFF4f4f4f)
+            ..color = const Color(0xFF4f4f4f)
       );
     } else {
       canvas.drawRRect(
@@ -111,7 +114,7 @@ class CheckBoxPainter extends CustomPainter {
               Radius.circular(min(size.width, size.height) * 5 / 16)
           ),
           Paint()
-            ..color = Color(0xFF4f4f4f)
+            ..color = const Color(0xFF4f4f4f)
       );
       canvas.drawRRect(
           RRect.fromRectAndRadius(

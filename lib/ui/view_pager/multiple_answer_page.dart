@@ -1,14 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_item.dart';
 
-import 'one_answer_item.dart';
+import 'multiple_answer_item.dart';
 
 class MultipleAnswerPage extends StatefulWidget {
 
-  MultipleAnswerPage({Key? key, required this.currentQuestion}) : super(key: key);
+  MultipleAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
+    currentQuestion.questionList.forEach((element) {
+      items.add(
+          CustomCheckBox(
+            size: 26,
+            text: element,
+          )
+      );
+    });
+  }
 
   Question currentQuestion;
-  String selectedString = "";
+  List<CustomCheckBox> items = [];
 
   @override
   State createState() => _MultipleAnswerPageState();
@@ -16,29 +26,13 @@ class MultipleAnswerPage extends StatefulWidget {
 
 class _MultipleAnswerPageState extends State<MultipleAnswerPage> {
 
-  // TODO: bug here!!!!!!!!!
-  // _OneAnswerPageState() {
-  //   widget.currentQuestion.questionList.forEach((element) {
-  //     items.add(
-  //         CustomRadioButton(
-  //           size: 26,
-  //           text: element,
-  //           resetButtonsCallback: resetRadioButtons,
-  //         )
-  //     );
-  //   });
-  // }
-
-  List<CustomRadioButton> items = [];
-
   void resetRadioButtons(String text) {
     setState(() {
-      for (var element in items) {
+      for (var element in widget.items) {
         element.isSelected = false;
       }
 
-      items.where((element) => element.text == text).first.isSelected = true;
-      widget.selectedString = text;
+      widget.items.where((element) => element.text == text).first.isSelected = true;
     });
 
     rebuildAllChildren(context);
@@ -69,9 +63,9 @@ class _MultipleAnswerPageState extends State<MultipleAnswerPage> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: items.length,
+            itemCount: widget.items.length,
             itemBuilder: (BuildContext context, int index) {
-              return items[index];
+              return widget.items[index];
             },
           ),
         )

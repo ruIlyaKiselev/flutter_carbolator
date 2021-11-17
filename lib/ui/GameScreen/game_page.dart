@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:some_lessons_from_youtube/repository/carbolator_repository.dart';
 import 'package:some_lessons_from_youtube/repository/carbolator_repository_impl.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/multiple_answer_item.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/multiple_answer_page.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_item.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_page.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/selector_item.dart';
@@ -147,33 +148,7 @@ class ExamplePageView extends StatelessWidget {
       controller: _controller,
       children: [
         OneAnswerPage(currentQuestion: repository.getQuestions()[0]),
-        Center(
-          child: Column(
-            children: [
-              CustomRadioButton(size: 32, text: "Custom Radio Button", resetButtonsCallback: print,),
-              CustomRadioButton(size: 64, text: "Custom Radio Button", resetButtonsCallback: print,),
-              CustomRadioButton(size: 86, text: "Custom Radio Button", resetButtonsCallback: print,)
-            ],
-          ),
-        ),
-         Center(
-          child: Column(
-            children: [
-              CustomCheckBox(size: 32, text: "Custom CheckBox"),
-              CustomCheckBox(size: 64, text: "Custom CheckBox"),
-              CustomCheckBox(size: 86, text: "Custom CheckBox"),
-            ],
-          ),
-        ),
-        Center(
-          child: Column(
-            children: [
-              CustomSelector(size: 32, min: -5, max: 5, text: "Some text", secondText: "Additional info",),
-              CustomSelector(size: 46, min: 0, max: 5, text: "Some text", secondText: "Additional info",),
-              CustomSelector(size: 60, min: -5, max: 0, text: "Some text", secondText: "Additional info",),
-            ],
-          ),
-        ),
+        MultipleAnswerPage(currentQuestion: repository.getQuestions()[1]),
       ],
     );
   }
