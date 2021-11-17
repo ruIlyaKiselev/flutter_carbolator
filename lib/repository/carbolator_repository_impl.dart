@@ -65,6 +65,18 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository{
             "До 17500 км (как Москва–Веллингтон)"
           ],
           questionType: QuestionType.selectorsAnswer,
+          nextQuestionId: 4
+      ),
+      Question(
+          id: 4,
+          text: "Сколько ...?",
+          questionList: [
+            "50",
+            "100",
+            "150",
+            "Другое"
+          ],
+          questionType: QuestionType.lastFieldAnswer,
           nextQuestionId: -1
       )
     ];

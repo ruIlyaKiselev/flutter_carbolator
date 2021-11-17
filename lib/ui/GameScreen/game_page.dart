@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:some_lessons_from_youtube/domain/question_type.dart';
 import 'package:some_lessons_from_youtube/repository/carbolator_repository.dart';
 import 'package:some_lessons_from_youtube/repository/carbolator_repository_impl.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/multiple_answer_item.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/lastfield_answer_page.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/multiple_answer_page.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_item.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_page.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/selector_answer_item.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/selector_answer_page.dart';
 
 class GameWidget extends StatelessWidget {
@@ -144,14 +143,29 @@ class ExamplePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    List<Widget> wigets = [];
+
+    repository.getQuestions().forEach((element) {
+      switch (element.questionType) {
+        case QuestionType.oneAnswer:
+          wigets.add(OneAnswerPage(currentQuestion: element));
+          break;
+        case QuestionType.multipleAnswer:
+          wigets.add(MultipleAnswerPage(currentQuestion: element));
+          break;
+        case QuestionType.selectorsAnswer:
+          wigets.add(SelectorAnswerPage(currentQuestion: element));
+          break;
+        case QuestionType.lastFieldAnswer:
+          wigets.add(LastFieldAnswerPage(currentQuestion: element));
+          break;
+      }
+    });
+
     return PageView(
       scrollDirection: Axis.horizontal,
       controller: _controller,
-      children: [
-        OneAnswerPage(currentQuestion: repository.getQuestions()[0]),
-        MultipleAnswerPage(currentQuestion: repository.getQuestions()[1]),
-        SelectorAnswerPage(currentQuestion: repository.getQuestions()[2]),
-      ],
+      children: wigets
     );
   }
 }
