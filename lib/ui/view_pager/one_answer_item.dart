@@ -5,11 +5,17 @@ import 'package:flutter/material.dart';
 
 class CustomRadioButton extends StatefulWidget {
 
-  CustomRadioButton({Key? key, required this.size, required this.text}) : super(key: key);
+  CustomRadioButton({
+    Key? key,
+    required this.size,
+    required this.text,
+    required this.resetButtonsCallback
+  }) : super(key: key);
 
   bool isSelected = false;
-  String text = "";
+  String text;
   double size;
+  Function(String text) resetButtonsCallback;
 
   @override
   State createState() => _CustomRadioButtonState();
@@ -21,9 +27,7 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => {
-        setState(() {
-          widget.isSelected = !widget.isSelected;
-        })
+        widget.resetButtonsCallback.call(widget.text)
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -35,15 +39,18 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
             painter: RadioButtonPainter(isSelected: widget.isSelected),
           ),
           Expanded(
-              child: Text(
-                widget.text,
-                style: TextStyle(
-                    fontFamily: "Montserrat",
-                    color: Color(0xFF4f4f4f),
-                    fontWeight: FontWeight.w800,
-                    fontSize: widget.size * 2 / 3
+              child: Container(
+                padding: EdgeInsets.all(widget.size / 4),
+                child: Text(
+                  widget.text,
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      color: const Color(0xFF4f4f4f),
+                      fontWeight: FontWeight.w800,
+                      fontSize: widget.size * 2 / 3
+                  ),
+                  textAlign: TextAlign.start,
                 ),
-                textAlign: TextAlign.start,
               )
           )
         ],

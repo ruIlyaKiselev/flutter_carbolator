@@ -57,7 +57,7 @@ class _CustomSelectorState extends State<CustomSelector> {
                   widget.text,
                   style: TextStyle(
                       fontFamily: "Montserrat",
-                      color: Color(0xFF4f4f4f),
+                      color: const Color(0xFF4f4f4f),
                       fontWeight: FontWeight.w800,
                       fontSize: widget.size * 2 / 3
                   ),
@@ -69,7 +69,7 @@ class _CustomSelectorState extends State<CustomSelector> {
                   widget.secondText,
                   style: TextStyle(
                       fontFamily: "Montserrat",
-                      color: Color(0xFF4f4f4f),
+                      color: const Color(0xFF4f4f4f),
                       fontWeight: FontWeight.w800,
                       fontSize: widget.size / 2
                   ),
@@ -82,7 +82,7 @@ class _CustomSelectorState extends State<CustomSelector> {
         Container(
           decoration: BoxDecoration(
               border: Border.all(
-                color: Color(0xFF4f4f4f),
+                color: const Color(0xFF4f4f4f),
                 width: widget.size / 10,
               ),
               borderRadius: BorderRadius.circular(widget.size / 4)
@@ -90,7 +90,7 @@ class _CustomSelectorState extends State<CustomSelector> {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              InkWell(
+              GestureDetector(
                 onTap: () => setState(() {
                   widget.decrementCurrentNumber();
                 }),
@@ -99,14 +99,14 @@ class _CustomSelectorState extends State<CustomSelector> {
                   painter: MinusComponentPainter(),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: widget.size * 2.5,
                 child: Center(
                   child: Text(
                     widget.currentNumber.toString(),
                     style: TextStyle(
                         fontFamily: "Montserrat",
-                        color: Color(0xFF4f4f4f),
+                        color: const Color(0xFF4f4f4f),
                         fontWeight: FontWeight.w800,
                         fontSize: widget.size * 2 / 3
                     ),
@@ -114,7 +114,7 @@ class _CustomSelectorState extends State<CustomSelector> {
                   ),
                 ),
               ),
-              InkWell(
+              GestureDetector(
                 onTap: () => setState(() {
                   widget.incrementCurrentNumber();
                 }),
@@ -136,26 +136,26 @@ class PlusComponentPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawLine(
-        Offset(size.width / 2, size.height * 0.3),
-        Offset(size.width / 2, size.height * 0.7),
+        Offset(size.width / 2, size.height * 0.2),
+        Offset(size.width / 2, size.height * 0.8),
         Paint()
-          ..color = Color(0xFF4f4f4f)
+          ..color = const Color(0xFF4f4f4f)
           ..strokeWidth = min(size.width, size.height) / 10
           ..strokeCap = StrokeCap.round
     );
     canvas.drawLine(
-        Offset(size.width * 0.3, size.height / 2),
-        Offset(size.width * 0.7, size.height / 2),
+        Offset(size.width * 0.2, size.height / 2),
+        Offset(size.width * 0.8, size.height / 2),
         Paint()
-          ..color = Color(0xFF4f4f4f)
+          ..color = const Color(0xFF4f4f4f)
           ..strokeWidth = min(size.width, size.height) / 10
           ..strokeCap = StrokeCap.round
     );
     canvas.drawLine(
-        Offset(0, 0),
+        const Offset(0, 0),
         Offset(0, size.height),
         Paint()
-          ..color = Color(0xFF4f4f4f)
+          ..color = const Color(0xFF4f4f4f)
           ..strokeWidth = min(size.width, size.height) / 10
           ..strokeCap = StrokeCap.round
     );
@@ -172,18 +172,18 @@ class MinusComponentPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawLine(
-        Offset(size.width * 0.3, size.height / 2),
-        Offset(size.width * 0.7, size.height / 2),
+        Offset(size.width * 0.2, size.height / 2),
+        Offset(size.width * 0.8, size.height / 2),
         Paint()
-          ..color = Color(0xFF4f4f4f)
+          ..color = const Color(0xFF4f4f4f)
           ..strokeWidth = min(size.width, size.height) / 10
           ..strokeCap = StrokeCap.round
     );
     canvas.drawLine(
-        Offset(size.width * 0.3, size.height / 2),
-        Offset(size.width * 0.7, size.height / 2),
+        Offset(size.width * 0.2, size.height / 2),
+        Offset(size.width * 0.8, size.height / 2),
         Paint()
-          ..color = Color(0xFF4f4f4f)
+          ..color = const Color(0xFF4f4f4f)
           ..strokeWidth = min(size.width, size.height) / 10
           ..strokeCap = StrokeCap.round
     );
@@ -191,7 +191,7 @@ class MinusComponentPainter extends CustomPainter {
         Offset(size.width, 0),
         Offset(size.width, size.height),
         Paint()
-          ..color = Color(0xFF4f4f4f)
+          ..color = const Color(0xFF4f4f4f)
           ..strokeWidth = min(size.width, size.height) / 10
           ..strokeCap = StrokeCap.round
     );
@@ -200,85 +200,5 @@ class MinusComponentPainter extends CustomPainter {
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return false;
-  }
-}
-
-class SelectorPainter extends CustomPainter {
-
-  bool isSelected;
-
-  SelectorPainter({required this.isSelected});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-
-    if (isSelected) {
-      canvas.drawRRect(
-          RRect.fromRectAndRadius(
-              Rect.fromCenter(
-                  center: Offset(size.width / 2, size.height / 2),
-                  width: size.width,
-                  height: size.height
-              ),
-              Radius.circular(8)
-          ),
-          Paint()
-            ..color = Color(0xFF4f4f4f)
-      );
-      canvas.drawRRect(
-          RRect.fromRectAndRadius(
-              Rect.fromCenter(
-                  center: Offset(size.width / 2, size.height / 2),
-                  width: size.width * 3 / 4,
-                  height: size.height * 3 / 4
-              ),
-              Radius.circular(8)
-          ),
-          Paint()
-            ..color = Colors.white
-      );
-      canvas.drawRRect(
-          RRect.fromRectAndRadius(
-              Rect.fromCenter(
-                  center: Offset(size.width / 2, size.height / 2),
-                  width: size.width / 2,
-                  height: size.height / 2
-              ),
-              Radius.circular(4)
-          ),
-          Paint()
-            ..color = Color(0xFF4f4f4f)
-      );
-    } else {
-      canvas.drawRRect(
-          RRect.fromRectAndRadius(
-              Rect.fromCenter(
-                  center: Offset(size.width / 2, size.height / 2),
-                  width: size.width,
-                  height: size.height
-              ),
-              Radius.circular(8)
-          ),
-          Paint()
-            ..color = Color(0xFF4f4f4f)
-      );
-      canvas.drawRRect(
-          RRect.fromRectAndRadius(
-              Rect.fromCenter(
-                  center: Offset(size.width / 2, size.height / 2),
-                  width: size.width * 3 / 4,
-                  height: size.height * 3 / 4
-              ),
-              Radius.circular(8)
-          ),
-          Paint()
-            ..color = Colors.white
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(SelectorPainter oldDelegate) {
-    return oldDelegate.isSelected != isSelected;
   }
 }

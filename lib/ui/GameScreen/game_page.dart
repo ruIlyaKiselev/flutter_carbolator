@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:some_lessons_from_youtube/repository/carbolator_repository.dart';
+import 'package:some_lessons_from_youtube/repository/carbolator_repository_impl.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/multiple_answer_item.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_item.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_page.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/selector_item.dart';
 
 class GameWidget extends StatelessWidget {
@@ -131,6 +134,8 @@ class ExamplePageView extends StatelessWidget {
 
   ExamplePageView({Key? key}) : super(key: key);
 
+  CarbolatorRepository repository = CarbolatorRepositoryImpl();
+
   late final PageController _controller = PageController(initialPage: 0);
   PageController get controller => _controller;
 
@@ -140,13 +145,14 @@ class ExamplePageView extends StatelessWidget {
     return PageView(
       scrollDirection: Axis.horizontal,
       controller: _controller,
-      children: <Widget>[
+      children: [
+        OneAnswerPage(currentQuestion: repository.getQuestions()[0]),
         Center(
           child: Column(
             children: [
-              CustomRadioButton(size: 32, text: "Custom Radio Button"),
-              CustomRadioButton(size: 64, text: "Custom Radio Button"),
-              CustomRadioButton(size: 86, text: "Custom Radio Button"),
+              CustomRadioButton(size: 32, text: "Custom Radio Button", resetButtonsCallback: print,),
+              CustomRadioButton(size: 64, text: "Custom Radio Button", resetButtonsCallback: print,),
+              CustomRadioButton(size: 86, text: "Custom Radio Button", resetButtonsCallback: print,)
             ],
           ),
         ),
@@ -164,10 +170,10 @@ class ExamplePageView extends StatelessWidget {
             children: [
               CustomSelector(size: 32, min: -5, max: 5, text: "Some text", secondText: "Additional info",),
               CustomSelector(size: 46, min: 0, max: 5, text: "Some text", secondText: "Additional info",),
-              CustomSelector(size: 50, min: -5, max: 0, text: "Some text", secondText: "Additional info",),
+              CustomSelector(size: 60, min: -5, max: 0, text: "Some text", secondText: "Additional info",),
             ],
           ),
-        )
+        ),
       ],
     );
   }
