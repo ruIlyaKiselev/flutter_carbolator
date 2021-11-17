@@ -74,7 +74,7 @@ class PlusComponentPainter extends CustomPainter {
                 width: size.width,
                 height: size.height
             ),
-            Radius.circular(8)
+            Radius.circular(10)
         ),
         Paint()
           ..color = Color(0xFF4f4f4f)
@@ -126,7 +126,7 @@ class MinusComponentPainter extends CustomPainter {
                 width: size.width,
                 height: size.height
             ),
-            Radius.circular(8)
+            Radius.circular(10)
         ),
         Paint()
           ..color = Color(0xFF4f4f4f)

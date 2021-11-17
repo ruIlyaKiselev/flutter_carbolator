@@ -142,10 +142,22 @@ class ExamplePageView extends StatelessWidget {
       controller: _controller,
       children: <Widget>[
         Center(
-          child: CustomRadioButton(size: 16, text: "Custom Radio Button"),
+          child: Column(
+            children: [
+              CustomRadioButton(size: 32, text: "Custom Radio Button"),
+              CustomRadioButton(size: 64, text: "Custom Radio Button"),
+              CustomRadioButton(size: 86, text: "Custom Radio Button"),
+            ],
+          ),
         ),
          Center(
-          child: CustomCheckBox(size: 32, text: "Custom CheckBox"),
+          child: Column(
+            children: [
+              CustomCheckBox(size: 32, text: "Custom CheckBox"),
+              CustomCheckBox(size: 64, text: "Custom CheckBox"),
+              CustomCheckBox(size: 86, text: "Custom CheckBox"),
+            ],
+          ),
         ),
         Center(
           child: CustomSelector(size: 32, min: 0, max: 5, text: "Some text", secondText: "Additional info",),

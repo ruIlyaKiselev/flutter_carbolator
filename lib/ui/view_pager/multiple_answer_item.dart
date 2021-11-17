@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,29 +21,32 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => {
-        print("new event"),
         setState(() {
           widget.isSelected = !widget.isSelected;
         })
       },
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
+
         children: [
           CustomPaint(
             size: Size(widget.size, widget.size),
             painter: CheckBoxPainter(isSelected: widget.isSelected),
           ),
-          Text(
-            widget.text,
-            style: const TextStyle(
-                fontFamily: "Montserrat",
-                color: Color(0xFF4f4f4f),
-                fontWeight: FontWeight.w800,
-                fontSize: 20
-            ),
-            textAlign: TextAlign.center,
+          Expanded(
+              child: Text(
+                widget.text,
+                style: TextStyle(
+                    fontFamily: "Montserrat",
+                    color: Color(0xFF4f4f4f),
+                    fontWeight: FontWeight.w800,
+                    fontSize: widget.size * 2 / 3
+                ),
+                maxLines: 6,
+                textAlign: TextAlign.start,
+              )
           )
         ],
       ),
@@ -66,7 +71,7 @@ class CheckBoxPainter extends CustomPainter {
                   width: size.width,
                   height: size.height
               ),
-              Radius.circular(8)
+              Radius.circular(min(size.width, size.height) * 5 / 16)
           ),
           Paint()
             ..color = Color(0xFF4f4f4f)
@@ -78,7 +83,7 @@ class CheckBoxPainter extends CustomPainter {
                   width: size.width * 3 / 4,
                   height: size.height * 3 / 4
               ),
-              Radius.circular(8)
+              Radius.circular(min(size.width, size.height) / 4)
           ),
           Paint()
             ..color = Colors.white
@@ -90,7 +95,7 @@ class CheckBoxPainter extends CustomPainter {
                   width: size.width / 2,
                   height: size.height / 2
               ),
-              Radius.circular(4)
+              Radius.circular(min(size.width, size.height) / 8)
           ),
           Paint()
             ..color = Color(0xFF4f4f4f)
@@ -103,7 +108,7 @@ class CheckBoxPainter extends CustomPainter {
                   width: size.width,
                   height: size.height
               ),
-              Radius.circular(8)
+              Radius.circular(min(size.width, size.height) * 5 / 16)
           ),
           Paint()
             ..color = Color(0xFF4f4f4f)
@@ -115,7 +120,7 @@ class CheckBoxPainter extends CustomPainter {
                   width: size.width * 3 / 4,
                   height: size.height * 3 / 4
               ),
-              Radius.circular(8)
+              Radius.circular(min(size.width, size.height) / 4)
           ),
           Paint()
             ..color = Colors.white

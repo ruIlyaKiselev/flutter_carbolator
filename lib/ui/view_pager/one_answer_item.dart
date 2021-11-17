@@ -21,7 +21,6 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => {
-        print("new event"),
         setState(() {
           widget.isSelected = !widget.isSelected;
         })
@@ -35,15 +34,17 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
             size: Size(widget.size, widget.size),
             painter: RadioButtonPainter(isSelected: widget.isSelected),
           ),
-          Text(
-            widget.text,
-            style: const TextStyle(
-                fontFamily: "Montserrat",
-                color: Color(0xFF4f4f4f),
-                fontWeight: FontWeight.w800,
-                fontSize: 20
-            ),
-            textAlign: TextAlign.center,
+          Expanded(
+              child: Text(
+                widget.text,
+                style: TextStyle(
+                    fontFamily: "Montserrat",
+                    color: Color(0xFF4f4f4f),
+                    fontWeight: FontWeight.w800,
+                    fontSize: widget.size * 2 / 3
+                ),
+                textAlign: TextAlign.start,
+              )
           )
         ],
       ),
@@ -61,29 +62,33 @@ class RadioButtonPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (isSelected) {
       canvas.drawCircle(
-          Offset.zero,
-          min(size.width, size.height),
-          Paint()..color = const Color(0xFF4f4f4f)
-      );
-      canvas.drawCircle(
-          Offset.zero,
-          min(size.width, size.height) * 3 / 4,
-          Paint()..color = Colors.white
-      );
-      canvas.drawCircle(
-          Offset.zero,
+          Offset(size.width / 2, size.height / 2),
           min(size.width, size.height) / 2,
-          Paint()..color = const Color(0xFF4f4f4f)
+          Paint()
+            ..color = const Color(0xFF4f4f4f)
+      );
+      canvas.drawCircle(
+          Offset(size.width / 2, size.height / 2),
+          min(size.width, size.height) * 3 / 8,
+          Paint()
+            ..color = Colors.white
+            ..strokeWidth = 2
+      );
+      canvas.drawCircle(
+          Offset(size.width / 2, size.height / 2),
+          min(size.width, size.height) / 4,
+          Paint()
+            ..color = const Color(0xFF4f4f4f)
       );
     } else {
       canvas.drawCircle(
-          Offset.zero,
-          min(size.width, size.height),
+          Offset(size.width / 2, size.height / 2),
+          min(size.width, size.height) / 2,
           Paint()..color = const Color(0xFF4f4f4f)
       );
       canvas.drawCircle(
-          Offset.zero,
-          min(size.width, size.height) * 3 / 4,
+          Offset(size.width / 2, size.height / 2),
+          min(size.width, size.height) * 3 / 8,
           Paint()..color = Colors.white
       );
     }
