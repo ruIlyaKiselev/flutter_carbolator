@@ -1,43 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_item.dart';
 
-class OneAnswerPage extends StatefulWidget {
+import 'one_answer_item.dart';
 
-  OneAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
-    currentQuestion.questionList.forEach((element) {
-      items.add(
-          CustomRadioButton(
-            size: 26,
-            text: element,
-            resetButtonsCallback: null,
-          )
-      );
-    });
-  }
+class MultipleAnswerPage extends StatefulWidget {
+
+  MultipleAnswerPage({Key? key, required this.currentQuestion}) : super(key: key);
 
   Question currentQuestion;
-  List<CustomRadioButton> items = [];
+  String selectedString = "";
 
   @override
-  State createState() => _OneAnswerPageState(items);
+  State createState() => _MultipleAnswerPageState();
 }
 
-class _OneAnswerPageState extends State<OneAnswerPage> {
+class _MultipleAnswerPageState extends State<MultipleAnswerPage> {
 
-  _OneAnswerPageState(List<CustomRadioButton> items) {
-    items.forEach((element) {
-      element.resetButtonsCallback = resetRadioButtons;
-    });
-  }
+  // TODO: bug here!!!!!!!!!
+  // _OneAnswerPageState() {
+  //   widget.currentQuestion.questionList.forEach((element) {
+  //     items.add(
+  //         CustomRadioButton(
+  //           size: 26,
+  //           text: element,
+  //           resetButtonsCallback: resetRadioButtons,
+  //         )
+  //     );
+  //   });
+  // }
+
+  List<CustomRadioButton> items = [];
 
   void resetRadioButtons(String text) {
     setState(() {
-      for (var element in widget.items) {
+      for (var element in items) {
         element.isSelected = false;
       }
 
-      widget.items.where((element) => element.text == text).first.isSelected = true;
+      items.where((element) => element.text == text).first.isSelected = true;
+      widget.selectedString = text;
     });
 
     rebuildAllChildren(context);
@@ -68,9 +69,9 @@ class _OneAnswerPageState extends State<OneAnswerPage> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: widget.items.length,
+            itemCount: items.length,
             itemBuilder: (BuildContext context, int index) {
-              return widget.items[index];
+              return items[index];
             },
           ),
         )

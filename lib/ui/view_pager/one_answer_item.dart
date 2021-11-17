@@ -15,7 +15,7 @@ class CustomRadioButton extends StatefulWidget {
   bool isSelected = false;
   String text;
   double size;
-  Function(String text) resetButtonsCallback;
+  Function(String text)? resetButtonsCallback;
 
   @override
   State createState() => _CustomRadioButtonState();
@@ -27,7 +27,7 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => {
-        widget.resetButtonsCallback.call(widget.text)
+        widget.resetButtonsCallback?.call(widget.text)
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
