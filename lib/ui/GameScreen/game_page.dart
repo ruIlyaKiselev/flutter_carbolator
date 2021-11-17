@@ -160,7 +160,13 @@ class ExamplePageView extends StatelessWidget {
           ),
         ),
         Center(
-          child: CustomSelector(size: 32, min: 0, max: 5, text: "Some text", secondText: "Additional info",),
+          child: Column(
+            children: [
+              CustomSelector(size: 32, min: -5, max: 5, text: "Some text", secondText: "Additional info",),
+              CustomSelector(size: 46, min: 0, max: 5, text: "Some text", secondText: "Additional info",),
+              CustomSelector(size: 50, min: -5, max: 0, text: "Some text", secondText: "Additional info",),
+            ],
+          ),
         )
       ],
     );

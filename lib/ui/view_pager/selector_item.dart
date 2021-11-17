@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,14 +12,27 @@ class CustomSelector extends StatefulWidget {
     required this.max,
     required this.text,
     required this.secondText
-  }) : super(key: key);
+  }) : super(key: key) {currentNumber = min;}
 
+  int currentNumber = 0;
   bool isSelected = false;
   int min;
   int max;
   String text;
   String secondText;
   double size;
+
+  void incrementCurrentNumber() {
+    if (currentNumber + 1 <= max) {
+      currentNumber++;
+    }
+  }
+
+  void decrementCurrentNumber() {
+    if (currentNumber - 1 >= min) {
+      currentNumber--;
+    }
+  }
 
   @override
   State createState() => _CustomSelectorState();
@@ -27,38 +42,91 @@ class _CustomSelectorState extends State<CustomSelector> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => {
-        print("new event"),
-        setState(() {
-          widget.isSelected = !widget.isSelected;
-        })
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CustomPaint(
-            size: Size(widget.size, widget.size),
-            painter: MinusComponentPainter(),
-          ),
-          CustomPaint(
-            size: Size(widget.size, widget.size),
-            painter: PlusComponentPainter(),
-          ),
-          Text(
-            widget.text,
-            style: const TextStyle(
-                fontFamily: "Montserrat",
-                color: Color(0xFF4f4f4f),
-                fontWeight: FontWeight.w800,
-                fontSize: 20
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+                child: Text(
+                  widget.text,
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      color: Color(0xFF4f4f4f),
+                      fontWeight: FontWeight.w800,
+                      fontSize: widget.size * 2 / 3
+                  ),
+                  textAlign: TextAlign.start,
+                )
             ),
-            textAlign: TextAlign.center,
-          )
-        ],
-      ),
+            Expanded(
+                child: Text(
+                  widget.secondText,
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      color: Color(0xFF4f4f4f),
+                      fontWeight: FontWeight.w800,
+                      fontSize: widget.size / 2
+                  ),
+                  textAlign: TextAlign.start,
+                )
+            ),
+          ],
+        ),
+
+        Container(
+          decoration: BoxDecoration(
+              border: Border.all(
+                color: Color(0xFF4f4f4f),
+                width: widget.size / 10,
+              ),
+              borderRadius: BorderRadius.circular(widget.size / 4)
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InkWell(
+                onTap: () => setState(() {
+                  widget.decrementCurrentNumber();
+                }),
+                child: CustomPaint(
+                  size: Size(widget.size, widget.size),
+                  painter: MinusComponentPainter(),
+                ),
+              ),
+              Container(
+                width: widget.size * 2.5,
+                child: Center(
+                  child: Text(
+                    widget.currentNumber.toString(),
+                    style: TextStyle(
+                        fontFamily: "Montserrat",
+                        color: Color(0xFF4f4f4f),
+                        fontWeight: FontWeight.w800,
+                        fontSize: widget.size * 2 / 3
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () => setState(() {
+                  widget.incrementCurrentNumber();
+                }),
+                child: CustomPaint(
+                  size: Size(widget.size, widget.size),
+                  painter: PlusComponentPainter(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -67,44 +135,28 @@ class PlusComponentPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawRRect(
-        RRect.fromRectAndRadius(
-            Rect.fromCenter(
-                center: Offset(size.width / 2, size.height / 2),
-                width: size.width,
-                height: size.height
-            ),
-            Radius.circular(10)
-        ),
-        Paint()
-          ..color = Color(0xFF4f4f4f)
-    );
-    canvas.drawRRect(
-        RRect.fromRectAndRadius(
-            Rect.fromCenter(
-                center: Offset(size.width / 2, size.height / 2),
-                width: size.width * 3 / 4,
-                height: size.height * 3 / 4
-            ),
-            Radius.circular(8)
-        ),
-        Paint()
-          ..color = Colors.white
-    );
     canvas.drawLine(
         Offset(size.width / 2, size.height * 0.3),
         Offset(size.width / 2, size.height * 0.7),
-    Paint()
-      ..color = Color(0xFF4f4f4f)
-      ..strokeWidth = 4
-      ..strokeCap = StrokeCap.round
-    );
-    canvas.drawLine(
-        Offset(size.height * 0.3, size.width / 2),
-        Offset(size.height * 0.7, size.width / 2),
         Paint()
           ..color = Color(0xFF4f4f4f)
-          ..strokeWidth = 4
+          ..strokeWidth = min(size.width, size.height) / 10
+          ..strokeCap = StrokeCap.round
+    );
+    canvas.drawLine(
+        Offset(size.width * 0.3, size.height / 2),
+        Offset(size.width * 0.7, size.height / 2),
+        Paint()
+          ..color = Color(0xFF4f4f4f)
+          ..strokeWidth = min(size.width, size.height) / 10
+          ..strokeCap = StrokeCap.round
+    );
+    canvas.drawLine(
+        Offset(0, 0),
+        Offset(0, size.height),
+        Paint()
+          ..color = Color(0xFF4f4f4f)
+          ..strokeWidth = min(size.width, size.height) / 10
           ..strokeCap = StrokeCap.round
     );
   }
@@ -119,36 +171,28 @@ class MinusComponentPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawRRect(
-        RRect.fromRectAndRadius(
-            Rect.fromCenter(
-                center: Offset(size.width / 2, size.height / 2),
-                width: size.width,
-                height: size.height
-            ),
-            Radius.circular(10)
-        ),
+    canvas.drawLine(
+        Offset(size.width * 0.3, size.height / 2),
+        Offset(size.width * 0.7, size.height / 2),
         Paint()
           ..color = Color(0xFF4f4f4f)
-    );
-    canvas.drawRRect(
-        RRect.fromRectAndRadius(
-            Rect.fromCenter(
-                center: Offset(size.width / 2, size.height / 2),
-                width: size.width * 3 / 4,
-                height: size.height * 3 / 4
-            ),
-            Radius.circular(8)
-        ),
-        Paint()
-          ..color = Colors.white
+          ..strokeWidth = min(size.width, size.height) / 10
+          ..strokeCap = StrokeCap.round
     );
     canvas.drawLine(
-        Offset(size.height * 0.3, size.width / 2),
-        Offset(size.height * 0.7, size.width / 2),
+        Offset(size.width * 0.3, size.height / 2),
+        Offset(size.width * 0.7, size.height / 2),
         Paint()
           ..color = Color(0xFF4f4f4f)
-          ..strokeWidth = 4
+          ..strokeWidth = min(size.width, size.height) / 10
+          ..strokeCap = StrokeCap.round
+    );
+    canvas.drawLine(
+        Offset(size.width, 0),
+        Offset(size.width, size.height),
+        Paint()
+          ..color = Color(0xFF4f4f4f)
+          ..strokeWidth = min(size.width, size.height) / 10
           ..strokeCap = StrokeCap.round
     );
   }
