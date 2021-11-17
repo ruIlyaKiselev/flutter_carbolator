@@ -5,6 +5,6 @@ class Answer {
   Answer({
     required this.id,
     required this.selectedAnswers
-  }) { }
+  });
 
 }

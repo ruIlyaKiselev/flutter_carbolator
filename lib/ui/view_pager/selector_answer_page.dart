@@ -1,29 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/selector_answer_item.dart';
 
-import 'multiple_answer_item.dart';
+class SelectorAnswerPage extends StatefulWidget {
 
-class MultipleAnswerPage extends StatefulWidget {
-
-  MultipleAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
+  SelectorAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
     currentQuestion.questionList.forEach((element) {
       items.add(
-          CustomCheckBox(
+          CustomSelector(
             size: 26,
+            min: 0,
+            max: 10,
             text: element,
+            secondText: "",
           )
       );
     });
   }
 
   Question currentQuestion;
-  List<CustomCheckBox> items = [];
+  List<CustomSelector> items = [];
 
   @override
-  State createState() => _MultipleAnswerPageState();
+  State createState() => _SelectorAnswerPageState();
 }
 
-class _MultipleAnswerPageState extends State<MultipleAnswerPage> {
+class _SelectorAnswerPageState extends State<SelectorAnswerPage> {
 
   void resetRadioButtons(String text) {
     setState(() {

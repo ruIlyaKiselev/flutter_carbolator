@@ -6,7 +6,8 @@ import 'package:some_lessons_from_youtube/ui/view_pager/multiple_answer_item.dar
 import 'package:some_lessons_from_youtube/ui/view_pager/multiple_answer_page.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_item.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_page.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/selector_item.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/selector_answer_item.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/selector_answer_page.dart';
 
 class GameWidget extends StatelessWidget {
   const GameWidget({Key? key}) : super(key: key);
@@ -149,6 +150,7 @@ class ExamplePageView extends StatelessWidget {
       children: [
         OneAnswerPage(currentQuestion: repository.getQuestions()[0]),
         MultipleAnswerPage(currentQuestion: repository.getQuestions()[1]),
+        SelectorAnswerPage(currentQuestion: repository.getQuestions()[2]),
       ],
     );
   }

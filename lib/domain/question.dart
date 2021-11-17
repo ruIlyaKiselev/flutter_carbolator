@@ -13,6 +13,6 @@ class Question {
     required this.questionList,
     required this.questionType,
     required this.nextQuestionId
-  }) {  }
+  });
 
 }

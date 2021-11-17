@@ -42,68 +42,21 @@ class _CustomSelectorState extends State<CustomSelector> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-                child: Text(
-                  widget.text,
-                  style: TextStyle(
-                      fontFamily: "Montserrat",
-                      color: const Color(0xFF4f4f4f),
-                      fontWeight: FontWeight.w800,
-                      fontSize: widget.size * 2 / 3
-                  ),
-                  textAlign: TextAlign.start,
-                )
-            ),
-            Expanded(
-                child: Text(
-                  widget.secondText,
-                  style: TextStyle(
-                      fontFamily: "Montserrat",
-                      color: const Color(0xFF4f4f4f),
-                      fontWeight: FontWeight.w800,
-                      fontSize: widget.size / 2
-                  ),
-                  textAlign: TextAlign.start,
-                )
-            ),
-          ],
-        ),
-
-        Container(
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color(0xFF4f4f4f),
-                width: widget.size / 10,
-              ),
-              borderRadius: BorderRadius.circular(widget.size / 4)
-          ),
-          child: Row(
+    return Container(
+      padding: EdgeInsets.all(widget.size / 4),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
-              GestureDetector(
-                onTap: () => setState(() {
-                  widget.decrementCurrentNumber();
-                }),
-                child: CustomPaint(
-                  size: Size(widget.size, widget.size),
-                  painter: MinusComponentPainter(),
-                ),
-              ),
-              SizedBox(
-                width: widget.size * 2.5,
-                child: Center(
+              Expanded(
                   child: Text(
-                    widget.currentNumber.toString(),
+                    widget.text,
                     style: TextStyle(
                         fontFamily: "Montserrat",
                         color: const Color(0xFF4f4f4f),
@@ -111,22 +64,72 @@ class _CustomSelectorState extends State<CustomSelector> {
                         fontSize: widget.size * 2 / 3
                     ),
                     textAlign: TextAlign.start,
-                  ),
-                ),
+                  )
               ),
-              GestureDetector(
-                onTap: () => setState(() {
-                  widget.incrementCurrentNumber();
-                }),
-                child: CustomPaint(
-                  size: Size(widget.size, widget.size),
-                  painter: PlusComponentPainter(),
-                ),
-              ),
+              // Expanded(
+              //     child: Text(
+              //       widget.secondText,
+              //       style: TextStyle(
+              //           fontFamily: "Montserrat",
+              //           color: const Color(0xFF4f4f4f),
+              //           fontWeight: FontWeight.w800,
+              //           fontSize: widget.size / 2
+              //       ),
+              //       textAlign: TextAlign.start,
+              //     )
+              // ),
             ],
           ),
-        ),
-      ],
+
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color: const Color(0xFF4f4f4f),
+                  width: widget.size / 10,
+                ),
+                borderRadius: BorderRadius.circular(widget.size / 4)
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () => setState(() {
+                    widget.decrementCurrentNumber();
+                  }),
+                  child: CustomPaint(
+                    size: Size(widget.size, widget.size),
+                    painter: MinusComponentPainter(),
+                  ),
+                ),
+                SizedBox(
+                  width: widget.size * 2.5,
+                  child: Center(
+                    child: Text(
+                      widget.currentNumber.toString(),
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          color: const Color(0xFF4f4f4f),
+                          fontWeight: FontWeight.w800,
+                          fontSize: widget.size * 2 / 3
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => setState(() {
+                    widget.incrementCurrentNumber();
+                  }),
+                  child: CustomPaint(
+                    size: Size(widget.size, widget.size),
+                    painter: PlusComponentPainter(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

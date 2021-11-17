@@ -27,7 +27,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
 
         children: [
