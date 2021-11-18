@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/selector_answer_item.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Items/selector_answer_item.dart';
 
-class SelectorAnswerPage extends StatefulWidget {
+import 'abstract_answer_page.dart';
+
+class SelectorAnswerPage extends StatefulWidget with AbstractAnswerPage {
 
   SelectorAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
     currentQuestion.questionList.forEach((element) {
@@ -23,30 +25,25 @@ class SelectorAnswerPage extends StatefulWidget {
 
   @override
   State createState() => _SelectorAnswerPageState();
+
+  @override
+  List<String> getAnswers() {
+    List<String> result = [];
+
+    items.forEach((element) {
+      result.add("${element.text}: ${element.currentNumber}");
+    });
+
+    return result;
+  }
+
+  @override
+  int getId() {
+    return currentQuestion.id;
+  }
 }
 
 class _SelectorAnswerPageState extends State<SelectorAnswerPage> {
-
-  void resetRadioButtons(String text) {
-    setState(() {
-      for (var element in widget.items) {
-        element.isSelected = false;
-      }
-
-      widget.items.where((element) => element.text == text).first.isSelected = true;
-    });
-
-    rebuildAllChildren(context);
-
-  }
-
-  void rebuildAllChildren(BuildContext context) {
-    void rebuild(Element el) {
-      el.markNeedsBuild();
-      el.visitChildren(rebuild);
-    }
-    (context as Element).visitChildren(rebuild);
-  }
 
   @override
   Widget build(BuildContext context) {

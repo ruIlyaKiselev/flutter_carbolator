@@ -1,35 +1,40 @@
 import 'package:flutter/cupertino.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_item.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Pages/abstract_answer_page.dart';
 
-class OneAnswerPage extends StatefulWidget {
+import '../Items/multiple_answer_item.dart';
 
-  OneAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
+class LastFieldAnswerPage extends StatefulWidget with AbstractAnswerPage {
+
+  LastFieldAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
     currentQuestion.questionList.forEach((element) {
       items.add(
-          CustomRadioButton(
+          CustomCheckBox(
             size: 26,
             text: element,
-            resetButtonsCallback: null,
           )
       );
     });
   }
 
   Question currentQuestion;
-  List<CustomRadioButton> items = [];
+  List<CustomCheckBox> items = [];
 
   @override
-  State createState() => _OneAnswerPageState(items);
+  State createState() => _LastFieldAnswerPageState();
+
+  @override
+  List<String> getAnswers() {
+    return [];
+  }
+
+  @override
+  int getId() {
+    return currentQuestion.id;
+  }
 }
 
-class _OneAnswerPageState extends State<OneAnswerPage> {
-
-  _OneAnswerPageState(List<CustomRadioButton> items) {
-    items.forEach((element) {
-      element.resetButtonsCallback = resetRadioButtons;
-    });
-  }
+class _LastFieldAnswerPageState extends State<LastFieldAnswerPage> {
 
   void resetRadioButtons(String text) {
     setState(() {

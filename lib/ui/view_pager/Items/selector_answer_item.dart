@@ -15,7 +15,6 @@ class CustomSelector extends StatefulWidget {
   }) : super(key: key) {currentNumber = min;}
 
   int currentNumber = 0;
-  bool isSelected = false;
   int min;
   int max;
   String text;

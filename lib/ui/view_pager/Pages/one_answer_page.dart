@@ -1,29 +1,56 @@
 import 'package:flutter/cupertino.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Items/one_answer_item.dart';
 
-import 'multiple_answer_item.dart';
+import 'abstract_answer_page.dart';
 
-class MultipleAnswerPage extends StatefulWidget {
+class OneAnswerPage extends StatefulWidget with AbstractAnswerPage  {
 
-  MultipleAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
+  OneAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
     currentQuestion.questionList.forEach((element) {
       items.add(
-          CustomCheckBox(
+          CustomRadioButton(
             size: 26,
             text: element,
+            resetButtonsCallback: null,
           )
       );
     });
   }
 
   Question currentQuestion;
-  List<CustomCheckBox> items = [];
+  List<CustomRadioButton> items = [];
 
   @override
-  State createState() => _MultipleAnswerPageState();
+  State createState() => _OneAnswerPageState(items);
+
+  @override
+  List<String> getAnswers() {
+
+    List<String> result = [];
+
+    items.forEach((element) {
+      if (element.isSelected) {
+        result.add(element.text);
+      }
+    });
+
+    return result;
+  }
+
+  @override
+  int getId() {
+    return currentQuestion.id;
+  }
 }
 
-class _MultipleAnswerPageState extends State<MultipleAnswerPage> {
+class _OneAnswerPageState extends State<OneAnswerPage> {
+
+  _OneAnswerPageState(List<CustomRadioButton> items) {
+    items.forEach((element) {
+      element.resetButtonsCallback = resetRadioButtons;
+    });
+  }
 
   void resetRadioButtons(String text) {
     setState(() {

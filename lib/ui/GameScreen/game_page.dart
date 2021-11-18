@@ -4,10 +4,11 @@ import 'package:some_lessons_from_youtube/domain/answer.dart';
 import 'package:some_lessons_from_youtube/domain/question_type.dart';
 import 'package:some_lessons_from_youtube/repository/carbolator_repository.dart';
 import 'package:some_lessons_from_youtube/repository/carbolator_repository_impl.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/lastfield_answer_page.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/multiple_answer_page.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/one_answer_page.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/selector_answer_page.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Pages/abstract_answer_page.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Pages/lastfield_answer_page.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Pages/multiple_answer_page.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Pages/one_answer_page.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Pages/selector_answer_page.dart';
 
 class GameWidget extends StatelessWidget {
   const GameWidget({Key? key}) : super(key: key);
@@ -144,37 +145,47 @@ class ExamplePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    List<Widget> wigets = [];
+    List<Widget> widgets = [];
 
     repository.getQuestions().forEach((element) {
       switch (element.questionType) {
         case QuestionType.oneAnswer:
-          wigets.add(OneAnswerPage(currentQuestion: element));
+          widgets.add(OneAnswerPage(currentQuestion: element));
           break;
         case QuestionType.multipleAnswer:
-          wigets.add(MultipleAnswerPage(currentQuestion: element));
+          widgets.add(MultipleAnswerPage(currentQuestion: element));
           break;
         case QuestionType.selectorsAnswer:
-          wigets.add(SelectorAnswerPage(currentQuestion: element));
+          widgets.add(SelectorAnswerPage(currentQuestion: element));
           break;
         case QuestionType.lastFieldAnswer:
-          wigets.add(LastFieldAnswerPage(currentQuestion: element));
+          widgets.add(LastFieldAnswerPage(currentQuestion: element));
           break;
       }
     });
 
-    // void collectAnswers() {
-    //   List<Answer> answers = [];
-    //
-    //   wigets.forEach((element) {
-    //     answers.add(
-    //       Answer(
-    //           id: element.id,
-    //           selectedAnswers: selectedAnswers
-    //       );
-    //     );
-    //   });
-    // }
+    void collectAnswers() {
+
+      List<AbstractAnswerPage> pagesProvider = [];
+      List<Answer> answers = [];
+
+      widgets.forEach((element) {
+        pagesProvider.add(element as AbstractAnswerPage);
+      });
+
+      pagesProvider.forEach((element) {
+        answers.add(
+          Answer(
+              id: element.getId(),
+              selectedAnswers: element.getAnswers()
+          )
+        );
+      });
+
+      answers.forEach((element) {
+        print("${element.id}: ${element.selectedAnswers}");
+      });
+    }
 
     return Stack(
       children: [
@@ -183,9 +194,12 @@ class ExamplePageView extends StatelessWidget {
             child: Container()
         ),
         PageView(
+            onPageChanged: (int page) => {
+              collectAnswers(),
+            },
             scrollDirection: Axis.horizontal,
             controller: _controller,
-            children: wigets
+            children: widgets
         )
       ],
     );

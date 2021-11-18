@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Items/multiple_answer_item.dart';
 
-import 'multiple_answer_item.dart';
+import 'abstract_answer_page.dart';
 
-class LastFieldAnswerPage extends StatefulWidget {
+class MultipleAnswerPage extends StatefulWidget with AbstractAnswerPage  {
 
-  LastFieldAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
+  MultipleAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
     currentQuestion.questionList.forEach((element) {
       items.add(
           CustomCheckBox(
@@ -20,10 +21,29 @@ class LastFieldAnswerPage extends StatefulWidget {
   List<CustomCheckBox> items = [];
 
   @override
-  State createState() => _LastFieldAnswerPageState();
+  State createState() => _MultipleAnswerPageState();
+
+  @override
+  List<String> getAnswers() {
+
+    List<String> result = [];
+
+    items.forEach((element) {
+      if (element.isSelected) {
+        result.add(element.text);
+      }
+    });
+
+    return result;
+  }
+
+  @override
+  int getId() {
+    return currentQuestion.id;
+  }
 }
 
-class _LastFieldAnswerPageState extends State<LastFieldAnswerPage> {
+class _MultipleAnswerPageState extends State<MultipleAnswerPage> {
 
   void resetRadioButtons(String text) {
     setState(() {
