@@ -13,7 +13,10 @@ class FinishWidget extends StatelessWidget {
           type: MaterialType.transparency,
           child: DecoratedBox(
               decoration: const BoxDecoration(
-                image: DecorationImage(image: AssetImage("assets/background2.png"), fit: BoxFit.fill),
+                image: DecorationImage(
+                    image: AssetImage("assets/background2.png"),
+                    fit: BoxFit.fill
+                ),
               ),
               child: foregroundContent()
           )
@@ -35,7 +38,7 @@ Widget foregroundContent() {
           ),
           Image.asset(
             "assets/iceberg3.png",
-            width: 200,
+            width: 180,
           ),
         ],
       ),

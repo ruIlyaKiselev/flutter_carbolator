@@ -13,12 +13,15 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   fluttertoast: ^8.0.8
+  retrofit: ^3.0.0
+  logger: ^3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  fluttertoast: ^8.0.8
   flutter_lints: ^1.0.0
+  retrofit_generator: ^3.0.0
+  build_runner: ^2.1.5
 
 
 
