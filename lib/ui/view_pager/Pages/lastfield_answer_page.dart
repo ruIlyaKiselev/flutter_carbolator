@@ -1,24 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Items/lastfield_answer_item.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/Pages/abstract_answer_page.dart';
 
-import '../Items/multiple_answer_item.dart';
 
 class LastFieldAnswerPage extends StatefulWidget with AbstractAnswerPage {
 
   LastFieldAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
     currentQuestion.questionList.forEach((element) {
       items.add(
-          CustomCheckBox(
+          CustomRadioButtonWithText(
             size: 26,
             text: element,
+            resetButtonsCallback: null,
           )
       );
     });
   }
 
   Question currentQuestion;
-  List<CustomCheckBox> items = [];
+  List<CustomRadioButtonWithText> items = [];
 
   @override
   State createState() => _LastFieldAnswerPageState();

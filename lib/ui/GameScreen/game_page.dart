@@ -21,7 +21,7 @@ class GameWidget extends StatelessWidget {
           type: MaterialType.transparency,
           child: DecoratedBox(
               decoration: const BoxDecoration(
-                image: DecorationImage(image: AssetImage("assets/background3.png"), fit: BoxFit.cover),
+                image: DecorationImage(image: AssetImage("assets/background1beta.png"), fit: BoxFit.fill),
               ),
               child: foregroundContent()
           )

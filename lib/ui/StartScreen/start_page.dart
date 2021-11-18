@@ -11,7 +11,7 @@ class StartWidget extends StatelessWidget {
         type: MaterialType.transparency,
         child: DecoratedBox(
             decoration: const BoxDecoration(
-              image: DecorationImage(image: AssetImage("assets/background3.png"), fit: BoxFit.cover),
+              image: DecorationImage(image: AssetImage("assets/background1.png"), fit: BoxFit.cover),
             ),
             child: foregroundContent(context)
         )
