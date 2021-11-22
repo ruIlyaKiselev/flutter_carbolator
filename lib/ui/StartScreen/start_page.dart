@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:some_lessons_from_youtube/ui/GameScreen/game_page.dart';
 
 class StartWidget extends StatelessWidget {
   const StartWidget({Key? key}) : super(key: key);

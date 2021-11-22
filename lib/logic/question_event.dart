@@ -8,3 +8,5 @@ class NewAnswerEvent extends QuestionEvent {
 
   NewAnswerEvent({required this.answer});
 }
+
+class UiCreatedEvent extends QuestionEvent {}

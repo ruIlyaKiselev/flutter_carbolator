@@ -14,12 +14,13 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
   CarbolatorRepository repository = CarbolatorRepositoryImpl();
   Set<Answer> answers = {};
 
-  QuestionBloc() : super(QuestionInitial()) {
+  QuestionBloc() : super(LoadingEvent()) {
     on<QuestionEvent>((event, emit) {
       if (event is NewAnswerEvent) {
         var answer = event.answer;
         answers.add(answer);
       }
+
     });
   }
 
