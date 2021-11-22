@@ -1,11 +1,27 @@
 import 'package:some_lessons_from_youtube/domain/answer.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
 import 'package:some_lessons_from_youtube/domain/question_type.dart';
+import 'package:some_lessons_from_youtube/network/api_contract.dart';
+import 'package:some_lessons_from_youtube/network/model/question.dart';
+import 'package:some_lessons_from_youtube/network/retrofit_factory.dart';
 import 'package:some_lessons_from_youtube/repository/carbolator_repository.dart';
+
+import 'package:logger/logger.dart';
+import 'package:dio/dio.dart';
 
 class CarbolatorRepositoryImpl implements CarbolatorRepository{
 
   List<Question> _questionList = [];
+  RestClient restClient = RestClient(Dio());
+
+  final Logger _logger = Logger();
+
+  CarbolatorRepositoryImpl() {
+    restClient.getAllQuestions(
+        ApiContract.hostHeaderValue,
+        ApiContract.acceptHeaderValue
+    ).then((value) => _logger.i(value));
+  }
 
   @override
   List<Question> getQuestions() {
@@ -18,7 +34,23 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository{
 
   @override
   void postAnswers(List<Answer> answers) {
-    // TODO: implement postAnswers
+
+    List<AnswerDtoItem> answerDtoItems = [];
+
+    answers.forEach((element) {
+      answerDtoItems.add(
+          AnswerDtoItem(
+              answers: element.selectedAnswers,
+              questionId: element.id
+          )
+      );
+    });
+
+    restClient.postAnswers(
+        ApiContract.hostHeaderValue,
+        ApiContract.acceptHeaderValue,
+        answerDtoItems
+    );
   }
 
   List<Question> _generateTestQuestions() {

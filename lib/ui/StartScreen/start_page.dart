@@ -104,9 +104,8 @@ Widget whiteBoxContent(BuildContext context) {
               width: double.infinity,
               child: TextButton(
                 onPressed: () => {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => GameWidget()),
+                  Navigator.of(context).pushNamed(
+                      "/game"
                   )
                 },
                 style: TextButton.styleFrom(

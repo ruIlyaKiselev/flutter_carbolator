@@ -10,9 +10,8 @@ class GreetingWidget extends StatelessWidget {
         backgroundColor: const Color(0xff006e91),
         body: InkWell(
             onTap: () => {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => StartWidget()),
+              Navigator.of(context).pushNamed(
+                "/start"
               )
             },
             child: SizedBox(

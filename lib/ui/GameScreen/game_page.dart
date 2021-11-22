@@ -23,14 +23,14 @@ class GameWidget extends StatelessWidget {
               decoration: const BoxDecoration(
                 image: DecorationImage(image: AssetImage("assets/background1beta.png"), fit: BoxFit.fill),
               ),
-              child: foregroundContent()
+              child: foregroundContent(context)
           )
       ),
     );
   }
 }
 
-Widget foregroundContent() {
+Widget foregroundContent(BuildContext context) {
   return Column(
       children: [
         Container(
@@ -57,7 +57,7 @@ Widget foregroundContent() {
         Container(
             height: 20
         ),
-        whiteBoxContent(),
+        whiteBoxContent(context),
         Container(
           height: 50,
         ),
@@ -65,9 +65,9 @@ Widget foregroundContent() {
   );
 }
 
-Widget whiteBoxContent() {
+Widget whiteBoxContent(BuildContext context) {
 
-  ExamplePageView _pageView = ExamplePageView();
+  ExamplePageView _pageView = ExamplePageView(buildContext: context);
 
   return  Expanded(
     child: Container(
@@ -85,7 +85,6 @@ Widget whiteBoxContent() {
       ),
       child: Column(
         children: [
-          //if (_pageView.controller.page?.toInt() != 3)
             Expanded(child: _pageView),
             bottomButtons(_pageView.controller)
 
@@ -136,8 +135,12 @@ Widget bottomButtons(PageController pageController) {
 }
 
 class ExamplePageView extends StatelessWidget {
+  BuildContext buildContext;
 
-  ExamplePageView({Key? key}) : super(key: key);
+  ExamplePageView({
+    Key? key,
+    required this.buildContext
+  }) : super(key: key);
 
   CarbolatorRepository repository = CarbolatorRepositoryImpl();
 
@@ -191,7 +194,14 @@ class ExamplePageView extends StatelessWidget {
 
     return PageView(
         onPageChanged: (int page) => {
-          collectAnswers(),
+          if (page == widgets.length - 1) {
+            Navigator.of(buildContext).pushNamed(
+                "/finish"
+            )
+          } else {
+            collectAnswers()
+
+          }
         },
         scrollDirection: Axis.horizontal,
         controller: _controller,
