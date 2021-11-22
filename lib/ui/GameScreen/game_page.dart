@@ -85,8 +85,10 @@ Widget whiteBoxContent() {
       ),
       child: Column(
         children: [
-          Expanded(child: _pageView),
-          bottomButtons(_pageView.controller)
+          //if (_pageView.controller.page?.toInt() != 3)
+            Expanded(child: _pageView),
+            bottomButtons(_pageView.controller)
+
         ],
       ),
     ),
@@ -175,10 +177,10 @@ class ExamplePageView extends StatelessWidget {
 
       pagesProvider.forEach((element) {
         answers.add(
-          Answer(
-              id: element.getId(),
-              selectedAnswers: element.getAnswers()
-          )
+            Answer(
+                id: element.getId(),
+                selectedAnswers: element.getAnswers()
+            )
         );
       });
 
@@ -187,21 +189,13 @@ class ExamplePageView extends StatelessWidget {
       });
     }
 
-    return Stack(
-      children: [
-        TextButton(
-            onPressed: () => {},
-            child: Container()
-        ),
-        PageView(
-            onPageChanged: (int page) => {
-              collectAnswers(),
-            },
-            scrollDirection: Axis.horizontal,
-            controller: _controller,
-            children: widgets
-        )
-      ],
+    return PageView(
+        onPageChanged: (int page) => {
+          collectAnswers(),
+        },
+        scrollDirection: Axis.horizontal,
+        controller: _controller,
+        children: widgets
     );
   }
 }
