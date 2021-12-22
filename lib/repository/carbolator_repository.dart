@@ -1,7 +1,10 @@
 import 'package:some_lessons_from_youtube/domain/answer.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
+import 'package:some_lessons_from_youtube/network/model/answers_store_dto.dart';
 
 abstract class CarbolatorRepository {
-  List<Question> getQuestions();
-  void postAnswers(List<Answer> answers);
+  Future<List<Question>?> getQuestions();
+  Future<void> postAnswers(List<Answer> answers);
+
+  Future<Question?> getQuestionById(int questionId);
 }

@@ -1,59 +1,59 @@
+
 import 'package:some_lessons_from_youtube/domain/answer.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
 import 'package:some_lessons_from_youtube/domain/question_type.dart';
-import 'package:some_lessons_from_youtube/network/api_contract.dart';
-import 'package:some_lessons_from_youtube/network/model/question.dart';
-import 'package:some_lessons_from_youtube/network/retrofit_factory.dart';
+import 'package:some_lessons_from_youtube/network/carbolator_api_provider.dart';
+import 'package:some_lessons_from_youtube/network/model/answers_store_dto.dart';
 import 'package:some_lessons_from_youtube/repository/carbolator_repository.dart';
 
-import 'package:logger/logger.dart';
-import 'package:dio/dio.dart';
+class CarbolatorRepositoryImpl implements CarbolatorRepository {
 
-class CarbolatorRepositoryImpl implements CarbolatorRepository{
-
-  List<Question> _questionList = [];
-  RestClient restClient = RestClient(Dio());
-
-  final Logger _logger = Logger();
-
-  CarbolatorRepositoryImpl() {
-    restClient.getAllQuestions(
-        ApiContract.hostHeaderValue,
-        ApiContract.acceptHeaderValue
-    ).then((value) => _logger.i(value));
-  }
+  List<Question>? _questionList = [];
+  final CarbolatorApiProvider _apiProvider = CarbolatorApiProvider();
 
   @override
-  List<Question> getQuestions() {
-    if (_questionList.isEmpty) {
-      _questionList = _generateTestQuestions();
+  Future<List<Question>?> getQuestions() async {
+    if (_questionList?.isEmpty ?? true) {
+      _questionList = await _generateTestQuestions();
+      // _questionList = await _getQuestionsFromApi();
     }
 
     return _questionList;
   }
 
   @override
-  void postAnswers(List<Answer> answers) {
-
-    List<AnswerDtoItem> answerDtoItems = [];
-
-    answers.forEach((element) {
-      answerDtoItems.add(
-          AnswerDtoItem(
-              answers: element.selectedAnswers,
-              questionId: element.id
-          )
-      );
-    });
-
-    restClient.postAnswers(
-        ApiContract.hostHeaderValue,
-        ApiContract.acceptHeaderValue,
-        answerDtoItems
-    );
+  Future<void> postAnswers(List<Answer> answers) async {
+    _apiProvider.postAnswers(answers.map((e) =>
+        AnswersStoreDto(
+            questionId: e.id,
+            answers: e.selectedAnswers
+        )
+    ).toList());
   }
 
-  List<Question> _generateTestQuestions() {
+  @override
+  Future<Question?> getQuestionById(int questionId) async {
+    var questions = await getQuestions();
+    return questions?.firstWhere((element) => element.id == questionId);
+  }
+
+  Future<List<Question>?> _getQuestionsFromApi() async {
+    var resultFromApi = await _apiProvider.getQuestions();
+    return resultFromApi?.map((e) => Question(
+      id: e.id,
+      text: e.text,
+      questionList: e.answers.map((e) => e.text).toList(),
+      questionType: e.typeAnswer.toQuestionType(),
+      nextQuestionId: e.nextQuestionId,
+      nextQuestionMap: {
+        for (var item in e.answers)
+          item.text : item.nextQuestionId
+      },
+    )).toList();
+  }
+
+  Future<List<Question>?> _generateTestQuestions() async {
+    await Future.delayed(const Duration(seconds: 1));
     List<Question> result = [
       Question(
           id: 1,
@@ -67,7 +67,8 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository{
             "Я веган"
           ],
           questionType: QuestionType.oneAnswer,
-          nextQuestionId: 2
+          nextQuestionId: 2,
+          nextQuestionMap: {}
       ),
       Question(
           id: 2,
@@ -83,7 +84,8 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository{
             "Солнечные нагреватели воды"
           ],
           questionType: QuestionType.multipleAnswer,
-          nextQuestionId: 3
+          nextQuestionId: 3,
+          nextQuestionMap: {}
       ),
       Question(
           id: 3,
@@ -97,7 +99,8 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository{
             "До 17500 км (как Москва–Веллингтон)"
           ],
           questionType: QuestionType.selectorsAnswer,
-          nextQuestionId: 4
+          nextQuestionId: 4,
+          nextQuestionMap: {}
       ),
       Question(
           id: 4,
@@ -109,7 +112,8 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository{
             "Другое"
           ],
           questionType: QuestionType.lastFieldAnswer,
-          nextQuestionId: -1
+          nextQuestionId: -1,
+          nextQuestionMap: {}
       )
     ];
 

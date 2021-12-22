@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:some_lessons_from_youtube/logic/question_bloc.dart';
+import 'package:some_lessons_from_youtube/repository/carbolator_repository_impl.dart';
 import 'package:some_lessons_from_youtube/ui/Router/app_router.dart';
 
 void main() {
@@ -23,19 +24,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<QuestionBloc>(
-          create: (context) => QuestionBloc(),
-        ),
-      ],
-      child: MaterialApp(
-        title: "Learning BloC!!!",
-        theme: ThemeData(
-            primarySwatch: Colors.blue,
-            visualDensity: VisualDensity.adaptivePlatformDensity
-        ),
-        onGenerateRoute: appRouter.onGenerateRoute,
+    return RepositoryProvider(
+      create: (context) => CarbolatorRepositoryImpl(),
+      child: BlocProvider<QuestionBloc>(
+          create: (context) =>
+              QuestionBloc(
+                  carbolatorRepository: context.read<CarbolatorRepositoryImpl>()
+              ),
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: "Learning BloC!!!",
+            theme: ThemeData(
+                primarySwatch: Colors.blue,
+                visualDensity: VisualDensity.adaptivePlatformDensity
+            ),
+            onGenerateRoute: appRouter.onGenerateRoute,
+          )
       ),
     );
   }

@@ -152,22 +152,22 @@ class ExamplePageView extends StatelessWidget {
 
     List<Widget> widgets = [];
 
-    repository.getQuestions().forEach((element) {
-      switch (element.questionType) {
-        case QuestionType.oneAnswer:
-          widgets.add(OneAnswerPage(currentQuestion: element));
-          break;
-        case QuestionType.multipleAnswer:
-          widgets.add(MultipleAnswerPage(currentQuestion: element));
-          break;
-        case QuestionType.selectorsAnswer:
-          widgets.add(SelectorAnswerPage(currentQuestion: element));
-          break;
-        case QuestionType.lastFieldAnswer:
-          widgets.add(LastFieldAnswerPage(currentQuestion: element));
-          break;
-      }
-    });
+    // repository.getQuestions().forEach((element) {
+    //   switch (element.questionType) {
+    //     case QuestionType.oneAnswer:
+    //       widgets.add(OneAnswerPage(currentQuestion: element));
+    //       break;
+    //     case QuestionType.multipleAnswer:
+    //       widgets.add(MultipleAnswerPage(currentQuestion: element));
+    //       break;
+    //     case QuestionType.selectorsAnswer:
+    //       widgets.add(SelectorAnswerPage(currentQuestion: element));
+    //       break;
+    //     case QuestionType.lastFieldAnswer:
+    //       widgets.add(LastFieldAnswerPage(currentQuestion: element));
+    //       break;
+    //   }
+    // });
 
     void collectAnswers() {
 

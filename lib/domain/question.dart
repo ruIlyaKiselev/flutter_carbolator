@@ -6,13 +6,15 @@ class Question {
   List<String> questionList;
   QuestionType questionType;
   int nextQuestionId;
+  Map<String, int> nextQuestionMap;
 
   Question({
     required this.id,
     required this.text,
     required this.questionList,
     required this.questionType,
-    required this.nextQuestionId
+    required this.nextQuestionId,
+    required this.nextQuestionMap
   });
 
 }

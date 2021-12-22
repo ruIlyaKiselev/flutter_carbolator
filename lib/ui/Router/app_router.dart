@@ -11,22 +11,22 @@ class AppRouter {
     switch (settings.name) {
       case '/greeting':
         return MaterialPageRoute(
-            builder: (_) => GreetingWidget()
+            builder: (_) => const GreetingWidget()
         );
       case '/start':
         return MaterialPageRoute(
-            builder: (_) => StartWidget()
+            builder: (_) => const StartWidget()
         );
       case '/game':
         return MaterialPageRoute(
-            builder: (_) => GameWidget()
+            builder: (_) => const GameWidget()
         );
       case '/finish':
         return MaterialPageRoute(
-            builder: (_) => FinishWidget()
+            builder: (_) => const FinishWidget()
         );
       default: return MaterialPageRoute(
-          builder: (_) => GreetingWidget()
+          builder: (_) => const GreetingWidget()
       );
     }
   }

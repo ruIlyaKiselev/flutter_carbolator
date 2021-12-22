@@ -84,47 +84,69 @@ Widget whiteBoxContent(BuildContext context) {
         borderRadius: BorderRadius.all(Radius.circular(16)),
         color: Colors.white,
       ),
-      child: Column(
+      child: Stack(
         children: [
-          const Text(
-            "Привет! Это карболятор – калькулятор углеродного следа. Он делает то, это и тд, и тп.\nТекст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. ",
-            style: TextStyle(
-                fontFamily: "Montserrat",
-                color: Color(0xFF4f4f4f),
-                fontWeight: FontWeight.w600,
-                fontSize: 20
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Column(
+                  children: const [
+                    Text(
+                      "Привет! Это карболятор – калькулятор углеродного следа. Он делает то, это и тд, и тп.\nТекст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст.  ",
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          color: Color(0xFF4f4f4f),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      "Привет! Это карболятор – калькулятор углеродного следа. Он делает то, это и тд, и тп.\nТекст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст. Текст.  ",
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          color: Color(0xFF4f4f4f),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 20
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ],
             ),
-            textAlign: TextAlign.center,
           ),
-          Expanded(
-              child: Container()
-          ),
-          SizedBox(
-              width: double.infinity,
-              child: TextButton(
-                onPressed: () => {
-                  Navigator.of(context).pushNamed(
-                      "/game"
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () => {
+                      Navigator.of(context).pushReplacementNamed(
+                          "/game"
+                      )
+                    },
+                    style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        backgroundColor: const Color(0xFF4f4f4f),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)
+                        )
+                    ),
+                    child: const Text(
+                      "Узнать свой углеродный след",
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   )
-                },
-                style: TextButton.styleFrom(
-                    primary: Colors.white,
-                    backgroundColor: const Color(0xFF4f4f4f),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)
-                    )
-                ),
-                child: const Text(
-                  "Узнать свой углеродный след",
-                  style: TextStyle(
-                      fontFamily: "Montserrat",
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 17
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              )
+              ),
+            ],
           )
         ],
       ),

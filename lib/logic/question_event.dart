@@ -3,10 +3,20 @@ part of 'question_bloc.dart';
 @immutable
 abstract class QuestionEvent {}
 
-class NewAnswerEvent extends QuestionEvent {
-  Answer answer;
+class QuestionsFetchedEvent extends QuestionEvent {}
 
-  NewAnswerEvent({required this.answer});
+class NewAnswerEvent extends QuestionEvent {
+  final Answer answer;
+
+  NewAnswerEvent({
+    required this.answer
+  });
 }
 
-class UiCreatedEvent extends QuestionEvent {}
+class SendAnswersEvent extends QuestionEvent {
+  final List<Answer> answers;
+
+  SendAnswersEvent({
+    required this.answers
+  });
+}
