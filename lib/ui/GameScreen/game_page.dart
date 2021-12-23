@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/src/provider.dart';
 import 'package:some_lessons_from_youtube/domain/answer.dart';
 import 'package:some_lessons_from_youtube/domain/question_type.dart';
-import 'package:some_lessons_from_youtube/repository/carbolator_repository.dart';
-import 'package:some_lessons_from_youtube/repository/carbolator_repository_impl.dart';
-import 'package:some_lessons_from_youtube/ui/view_pager/Pages/abstract_answer_page.dart';
+import 'package:some_lessons_from_youtube/logic/question_bloc.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/Pages/lastfield_answer_page.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/Pages/multiple_answer_page.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/Pages/one_answer_page.dart';
@@ -15,6 +15,7 @@ class GameWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<QuestionBloc>().add(NextQuestionEvent());
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Material(
@@ -67,34 +68,128 @@ Widget foregroundContent(BuildContext context) {
 
 Widget whiteBoxContent(BuildContext context) {
 
-  ExamplePageView _pageView = ExamplePageView(buildContext: context);
+  QuestionsWidget _questionsWidget = QuestionsWidget(buildContext: context);
 
-  return  Expanded(
-    child: Container(
-      width: double.infinity,
-      height: double.infinity,
-      margin: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-          bottom: 50
-      ),
-      padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-        color: Colors.white,
-      ),
-      child: Column(
-        children: [
-            Expanded(child: _pageView),
-            bottomButtons(_pageView.controller)
-
-        ],
-      ),
-    ),
+  return BlocBuilder<QuestionBloc, QuestionState>(
+    builder: (questionContext, questionState) {
+      if (questionState is! QuestionsFinishedState) {
+        return Expanded(
+          flex: 1,
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            margin: const EdgeInsets.only(
+                left: 20,
+                right: 20,
+                bottom: 50
+            ),
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(
+                  Radius.circular(16)
+              ),
+              color: Colors.white,
+            ),
+            child: Column(
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: _questionsWidget
+                ),
+                bottomButtons(context)
+              ],
+            ),
+          ),
+        );
+      } else {
+        return Expanded(
+          flex: 1,
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            margin: const EdgeInsets.only(
+                left: 20,
+                right: 20,
+                bottom: 50
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Expanded(
+                    child: SizedBox()
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20
+                  ),
+                  child: TextButton(
+                    onPressed: () => {
+                      Navigator.of(context).pushReplacementNamed(
+                          "/finish"
+                      )
+                    },
+                    style: TextButton.styleFrom(
+                        primary: const Color(0xFF4f4f4f),
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)
+                        )
+                    ),
+                    child: const Text(
+                      "Рассчитать",
+                      style: TextStyle(
+                          fontFamily: "Montserrat",
+                          color: Color(0xFF4f4f4f),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 8,
+                      right: 8,
+                      bottom: 50
+                  ),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        primary: Colors.white
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: const Text(
+                        "Вернуться к вопросам",
+                        style: TextStyle(
+                            color: Colors.white
+                        ),
+                      ),
+                    ),
+                    onPressed:() async => {
+                      context.read<QuestionBloc>().add(PrevQuestionEvent())
+                    },
+                  ),
+                ),
+                const Expanded(
+                    child: SizedBox()
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    },
   );
 }
 
-Widget bottomButtons(PageController pageController) {
+Widget bottomButtons(BuildContext context) {
   return Row(
     children: [
       TextButton(
@@ -106,7 +201,7 @@ Widget bottomButtons(PageController pageController) {
           ),
         ),
         onPressed: () => {
-          pageController.previousPage(duration: const Duration(microseconds: 1000), curve: Curves.linear)
+          context.read<QuestionBloc>().add(PrevQuestionEvent())
         },
         child: Image.asset(
           "assets/chevronprev.png",
@@ -123,7 +218,7 @@ Widget bottomButtons(PageController pageController) {
           ),
         ),
         onPressed: () => {
-          pageController.nextPage(duration: const Duration(microseconds: 1000), curve: Curves.linear)
+          context.read<QuestionBloc>().add(NextQuestionEvent())
         },
         child: Image.asset(
           "assets/chevronnext.png",
@@ -134,78 +229,83 @@ Widget bottomButtons(PageController pageController) {
   );
 }
 
-class ExamplePageView extends StatelessWidget {
-  BuildContext buildContext;
+class QuestionsWidget extends StatefulWidget {
+  final BuildContext buildContext;
 
-  ExamplePageView({
+  const QuestionsWidget({
     Key? key,
     required this.buildContext
   }) : super(key: key);
 
-  CarbolatorRepository repository = CarbolatorRepositoryImpl();
+  @override
+  State<QuestionsWidget> createState() => _QuestionsWidgetState();
+}
 
+class _QuestionsWidgetState extends State<QuestionsWidget> {
+  final PageController pageController = PageController();
+  int currentPageIndex = 0;
   late final PageController _controller = PageController(initialPage: 0);
+
   PageController get controller => _controller;
 
   @override
   Widget build(BuildContext context) {
-
-    List<Widget> widgets = [];
-
-    // repository.getQuestions().forEach((element) {
-    //   switch (element.questionType) {
-    //     case QuestionType.oneAnswer:
-    //       widgets.add(OneAnswerPage(currentQuestion: element));
-    //       break;
-    //     case QuestionType.multipleAnswer:
-    //       widgets.add(MultipleAnswerPage(currentQuestion: element));
-    //       break;
-    //     case QuestionType.selectorsAnswer:
-    //       widgets.add(SelectorAnswerPage(currentQuestion: element));
-    //       break;
-    //     case QuestionType.lastFieldAnswer:
-    //       widgets.add(LastFieldAnswerPage(currentQuestion: element));
-    //       break;
-    //   }
-    // });
-
-    void collectAnswers() {
-
-      List<AbstractAnswerPage> pagesProvider = [];
-      List<Answer> answers = [];
-
-      widgets.forEach((element) {
-        pagesProvider.add(element as AbstractAnswerPage);
-      });
-
-      pagesProvider.forEach((element) {
-        answers.add(
-            Answer(
-                id: element.getId(),
-                selectedAnswers: element.getAnswers()
-            )
-        );
-      });
-
-      answers.forEach((element) {
-        print("${element.id}: ${element.selectedAnswers}");
-      });
-    }
-
-    return PageView(
-        onPageChanged: (int page) => {
-          if (page == widgets.length - 1) {
-            Navigator.of(buildContext).pushNamed(
-                "/finish"
-            )
-          } else {
-            collectAnswers()
-
+    return BlocBuilder<QuestionBloc, QuestionState>(
+      builder: (questionContext, questionState) {
+        if (questionState is QuestionLoadedState) {
+          switch (questionState.question.questionType) {
+            case QuestionType.oneAnswer: return OneAnswerPage(
+              currentQuestion: questionState.question,
+              answersCallback: ({required int id, required List<String> selectedAnswers}) =>
+                  context.read<QuestionBloc>().add(
+                      NewAnswerEvent(
+                          answer: Answer(
+                              id: id,
+                              selectedAnswers: selectedAnswers
+                          )
+                      )
+                  ),
+            );
+            case QuestionType.multipleAnswer: return MultipleAnswerPage(
+              currentQuestion: questionState.question,
+              answersCallback: ({required int id, required List<String> selectedAnswers}) =>
+                  context.read<QuestionBloc>().add(
+                      NewAnswerEvent(
+                          answer: Answer(
+                              id: id,
+                              selectedAnswers: selectedAnswers
+                          )
+                      )
+                  ),
+            );
+            case QuestionType.selectorsAnswer: return SelectorAnswerPage(
+                currentQuestion: questionState.question,
+                answersCallback: ({required int id, required List<String> selectedAnswers}) =>
+                    context.read<QuestionBloc>().add(
+                        NewAnswerEvent(
+                            answer: Answer(
+                                id: id,
+                                selectedAnswers: selectedAnswers
+                            )
+                        )
+                    )
+            );
+            case QuestionType.lastFieldAnswer: return LastFieldAnswerPage(
+                currentQuestion: questionState.question,
+                answersCallback: ({required int id, required List<String> selectedAnswers}) =>
+                context.read<QuestionBloc>().add(
+                    NewAnswerEvent(
+                        answer: Answer(
+                            id: id,
+                            selectedAnswers: selectedAnswers
+                        )
+                    )
+                )
+            );
           }
-        },
-        scrollDirection: Axis.horizontal,
-        controller: _controller,
-        children: widgets
+        }
+        return const SizedBox();
+      },
     );
   }
 }

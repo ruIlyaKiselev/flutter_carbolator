@@ -5,21 +5,23 @@ import 'package:flutter/material.dart';
 
 class CustomSelector extends StatefulWidget {
 
-  CustomSelector({
-    Key? key,
-    required this.size,
-    required this.min,
-    required this.max,
-    required this.text,
-    required this.secondText
-  }) : super(key: key) {currentNumber = min;}
-
   int currentNumber = 0;
   int min;
   int max;
   String text;
   String secondText;
   double size;
+  Function()? resetButtonsCallback;
+
+  CustomSelector({
+    Key? key,
+    required this.size,
+    required this.min,
+    required this.max,
+    required this.text,
+    required this.secondText,
+    required this.resetButtonsCallback
+  }) : super(key: key) {currentNumber = min;}
 
   void incrementCurrentNumber() {
     if (currentNumber + 1 <= max) {
@@ -94,6 +96,7 @@ class _CustomSelectorState extends State<CustomSelector> {
                 GestureDetector(
                   onTap: () => setState(() {
                     widget.decrementCurrentNumber();
+                    widget.resetButtonsCallback?.call();
                   }),
                   child: CustomPaint(
                     size: Size(widget.size, widget.size),
@@ -118,6 +121,7 @@ class _CustomSelectorState extends State<CustomSelector> {
                 GestureDetector(
                   onTap: () => setState(() {
                     widget.incrementCurrentNumber();
+                    widget.resetButtonsCallback?.call();
                   }),
                   child: CustomPaint(
                     size: Size(widget.size, widget.size),

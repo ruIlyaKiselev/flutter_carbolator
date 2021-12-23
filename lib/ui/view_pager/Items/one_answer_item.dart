@@ -2,8 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Items/abstract_custom_radio_button.dart';
 
-class CustomRadioButton extends StatefulWidget {
+class CustomRadioButton extends AbstractCustomRadioButton {
+
+  bool selected = false;
+  String text;
+  double size;
+  Function(String text)? resetButtonsCallback;
 
   CustomRadioButton({
     Key? key,
@@ -12,13 +18,33 @@ class CustomRadioButton extends StatefulWidget {
     required this.resetButtonsCallback
   }) : super(key: key);
 
-  bool isSelected = false;
-  String text;
-  double size;
-  Function(String text)? resetButtonsCallback;
-
   @override
   State createState() => _CustomRadioButtonState();
+
+  @override
+  bool isSelected() {
+    return selected;
+  }
+
+  @override
+  String getText() {
+    return text;
+  }
+
+  @override
+  void select() {
+    selected = true;
+  }
+
+  @override
+  void unselect() {
+    selected = false;
+  }
+
+  @override
+  void resetCallback(String text) {
+    resetButtonsCallback?.call(text);
+  }
 }
 
 class _CustomRadioButtonState extends State<CustomRadioButton> {
@@ -36,7 +62,7 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
         children: [
           CustomPaint(
             size: Size(widget.size, widget.size),
-            painter: RadioButtonPainter(isSelected: widget.isSelected),
+            painter: RadioButtonPainter(isSelected: widget.selected),
           ),
           Expanded(
               child: Container(

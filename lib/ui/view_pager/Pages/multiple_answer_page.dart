@@ -6,22 +6,28 @@ import 'abstract_answer_page.dart';
 
 class MultipleAnswerPage extends StatefulWidget with AbstractAnswerPage  {
 
-  MultipleAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
+  Question currentQuestion;
+  List<CustomCheckBox> items = [];
+  Function({required int id, required List<String> selectedAnswers}) answersCallback;
+
+  MultipleAnswerPage({
+    Key? key,
+    required this.currentQuestion,
+    required this.answersCallback
+  }) : super(key: key) {
     currentQuestion.questionList.forEach((element) {
       items.add(
           CustomCheckBox(
             size: 26,
             text: element,
+            resetButtonsCallback: null
           )
       );
     });
   }
 
-  Question currentQuestion;
-  List<CustomCheckBox> items = [];
-
   @override
-  State createState() => _MultipleAnswerPageState();
+  State createState() => _MultipleAnswerPageState(items);
 
   @override
   List<String> getAnswers() {
@@ -45,17 +51,17 @@ class MultipleAnswerPage extends StatefulWidget with AbstractAnswerPage  {
 
 class _MultipleAnswerPageState extends State<MultipleAnswerPage> {
 
-  void resetRadioButtons(String text) {
-    setState(() {
-      for (var element in widget.items) {
-        element.isSelected = false;
-      }
-
-      widget.items.where((element) => element.text == text).first.isSelected = true;
+  _MultipleAnswerPageState(List<CustomCheckBox> items) {
+    items.forEach((element) {
+      element.resetButtonsCallback = elementsCallback;
     });
+  }
 
-    rebuildAllChildren(context);
-
+  void elementsCallback(String text) {
+    widget.answersCallback.call(
+        id: widget.currentQuestion.id,
+        selectedAnswers: widget.items.where((element) => element.isSelected).map((e) => e.text).toList()
+    );
   }
 
   void rebuildAllChildren(BuildContext context) {

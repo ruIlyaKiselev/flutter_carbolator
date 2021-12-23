@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
               ),
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: "Learning BloC!!!",
             theme: ThemeData(
                 primarySwatch: Colors.blue,
                 visualDensity: VisualDensity.adaptivePlatformDensity

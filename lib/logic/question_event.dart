@@ -5,6 +5,10 @@ abstract class QuestionEvent {}
 
 class QuestionsFetchedEvent extends QuestionEvent {}
 
+class NextQuestionEvent extends QuestionEvent {}
+
+class PrevQuestionEvent extends QuestionEvent {}
+
 class NewAnswerEvent extends QuestionEvent {
   final Answer answer;
 

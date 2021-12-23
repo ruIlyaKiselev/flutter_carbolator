@@ -3,32 +3,62 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Items/abstract_custom_radio_button.dart';
 
-class CustomRadioButtonWithText extends StatefulWidget {
+class CustomRadioButtonWithText extends AbstractCustomRadioButton  {
+
+  bool selected = false;
+  String text;
+  double size;
+  Function(String text)? resetButtonsCallback;
+  String value;
 
   CustomRadioButtonWithText({
     Key? key,
     required this.size,
     required this.text,
-    required this.resetButtonsCallback
+    required this.resetButtonsCallback,
+    required this.value,
   }) : super(key: key);
-
-  bool isSelected = false;
-  String text;
-  double size;
-  Function(String text)? resetButtonsCallback;
 
   @override
   State createState() => _CustomRadioButtonWithTextState();
+
+  @override
+  bool isSelected() {
+    return selected;
+  }
+
+  @override
+  String getText() {
+    return value;
+  }
+
+  @override
+  void select() {
+    selected = true;
+  }
+
+  @override
+  void unselect() {
+    selected = false;
+  }
+
+  @override
+  void resetCallback(String text) {
+    resetButtonsCallback?.call(text);
+  }
 }
 
 class _CustomRadioButtonWithTextState extends State<CustomRadioButtonWithText> {
+
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => {
-        widget.resetButtonsCallback?.call(widget.text)
+        widget.resetButtonsCallback?.call(widget.value)
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -37,7 +67,7 @@ class _CustomRadioButtonWithTextState extends State<CustomRadioButtonWithText> {
         children: [
           CustomPaint(
             size: Size(widget.size, widget.size),
-            painter: RadioButtonPainter(isSelected: widget.isSelected),
+            painter: RadioButtonPainter(isSelected: widget.selected),
           ),
           Container(
             padding: EdgeInsets.all(widget.size / 4),
@@ -57,23 +87,29 @@ class _CustomRadioButtonWithTextState extends State<CustomRadioButtonWithText> {
             child: GestureDetector(
               onTap: () {
                 FocusScopeNode currentFocus = FocusScope.of(context);
-
-                if (!currentFocus.hasPrimaryFocus) {
+                if (!currentFocus.hasFocus) {
                   currentFocus.unfocus();
                 }
               },
               child: TextFormField(
+                controller: controller..addListener(() {
+                  widget.value = controller.text.toString();
+                  widget.resetButtonsCallback?.call(widget.value);
+                }),
                 cursorColor: Colors.black,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                 ],
-                keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                    signed: false,
+                    decimal: true
+                ),
                 decoration: const InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.zero,
-                      borderSide: BorderSide(color: Colors.blueAccent),
-
-                    ),
+                  isDense: true,
+                  enabledBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.zero,
+                    borderSide: BorderSide(color: Colors.blueAccent),
+                  ),
                 ),
               ),
             ),

@@ -6,25 +6,31 @@ import 'abstract_answer_page.dart';
 
 class SelectorAnswerPage extends StatefulWidget with AbstractAnswerPage {
 
-  SelectorAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
+  Question currentQuestion;
+  List<CustomSelector> items = [];
+  Function({required int id, required List<String> selectedAnswers}) answersCallback;
+
+  SelectorAnswerPage({
+    Key? key,
+    required this.currentQuestion,
+    required this.answersCallback,
+  }) : super(key: key) {
     currentQuestion.questionList.forEach((element) {
       items.add(
           CustomSelector(
             size: 26,
             min: 0,
-            max: 10,
+            max: 999,
             text: element,
             secondText: "",
+            resetButtonsCallback: null,
           )
       );
     });
   }
 
-  Question currentQuestion;
-  List<CustomSelector> items = [];
-
   @override
-  State createState() => _SelectorAnswerPageState();
+  State createState() => _SelectorAnswerPageState(items);
 
   @override
   List<String> getAnswers() {
@@ -44,6 +50,19 @@ class SelectorAnswerPage extends StatefulWidget with AbstractAnswerPage {
 }
 
 class _SelectorAnswerPageState extends State<SelectorAnswerPage> {
+
+  _SelectorAnswerPageState(List<CustomSelector> items) {
+    items.forEach((element) {
+      element.resetButtonsCallback = resetRadioButtons;
+    });
+  }
+
+  void resetRadioButtons() {
+    widget.answersCallback.call(
+        id: widget.currentQuestion.id,
+        selectedAnswers: widget.items.map((e) => "${e.text}: ${e.currentNumber}").toList()
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

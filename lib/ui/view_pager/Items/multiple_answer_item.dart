@@ -5,11 +5,17 @@ import 'package:flutter/material.dart';
 
 class CustomCheckBox extends StatefulWidget {
 
-  CustomCheckBox({Key? key, required this.size, required this.text}) : super(key: key);
-
   bool isSelected = false;
   String text = "";
   double size;
+  Function(String text)? resetButtonsCallback;
+
+  CustomCheckBox({
+    Key? key,
+    required this.size,
+    required this.text,
+    required this.resetButtonsCallback
+  }) : super(key: key);
 
   @override
   State createState() => _CustomCheckBoxState();
@@ -23,6 +29,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
       onTap: () => {
         setState(() {
           widget.isSelected = !widget.isSelected;
+          widget.resetButtonsCallback?.call(widget.text);
         })
       },
       child: Row(

@@ -4,10 +4,18 @@ import 'package:some_lessons_from_youtube/ui/view_pager/Items/one_answer_item.da
 
 import 'abstract_answer_page.dart';
 
-class OneAnswerPage extends StatefulWidget with AbstractAnswerPage  {
+class OneAnswerPage extends StatefulWidget with AbstractAnswerPage {
 
-  OneAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
-    currentQuestion.questionList.forEach((element) {
+  Question currentQuestion;
+  List<CustomRadioButton> items = [];
+  Function({required int id, required List<String> selectedAnswers}) answersCallback;
+
+  OneAnswerPage({
+    Key? key,
+    required this.currentQuestion,
+    required this.answersCallback,
+  }) : super(key: key) {
+    for (var element in currentQuestion.questionList) {
       items.add(
           CustomRadioButton(
             size: 26,
@@ -15,11 +23,8 @@ class OneAnswerPage extends StatefulWidget with AbstractAnswerPage  {
             resetButtonsCallback: null,
           )
       );
-    });
+    }
   }
-
-  Question currentQuestion;
-  List<CustomRadioButton> items = [];
 
   @override
   State createState() => _OneAnswerPageState(items);
@@ -30,7 +35,7 @@ class OneAnswerPage extends StatefulWidget with AbstractAnswerPage  {
     List<String> result = [];
 
     items.forEach((element) {
-      if (element.isSelected) {
+      if (element.selected) {
         result.add(element.text);
       }
     });
@@ -55,14 +60,18 @@ class _OneAnswerPageState extends State<OneAnswerPage> {
   void resetRadioButtons(String text) {
     setState(() {
       for (var element in widget.items) {
-        element.isSelected = false;
+        element.selected = false;
       }
 
-      widget.items.where((element) => element.text == text).first.isSelected = true;
+      widget.items.where((element) => element.text == text).first.selected = true;
     });
 
     rebuildAllChildren(context);
 
+    widget.answersCallback.call(
+        id: widget.currentQuestion.id,
+        selectedAnswers: widget.items.where((element) => element.isSelected()).map((e) => e.text).toList()
+    );
   }
 
   void rebuildAllChildren(BuildContext context) {

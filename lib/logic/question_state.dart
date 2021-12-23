@@ -17,6 +17,8 @@ class QuestionLoadedState extends QuestionState {
   });
 }
 
+class QuestionsFinishedState extends QuestionState {}
+
 class AnswerAcceptedState extends QuestionState {
 
 }

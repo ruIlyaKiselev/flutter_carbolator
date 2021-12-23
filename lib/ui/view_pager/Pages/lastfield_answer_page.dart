@@ -1,28 +1,46 @@
 import 'package:flutter/cupertino.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Items/abstract_custom_radio_button.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/Items/lastfield_answer_item.dart';
+import 'package:some_lessons_from_youtube/ui/view_pager/Items/one_answer_item.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/Pages/abstract_answer_page.dart';
 
 
 class LastFieldAnswerPage extends StatefulWidget with AbstractAnswerPage {
 
-  LastFieldAnswerPage({Key? key, required this.currentQuestion}) : super(key: key) {
-    currentQuestion.questionList.forEach((element) {
-      items.add(
-          CustomRadioButtonWithText(
-            size: 26,
-            text: element,
-            resetButtonsCallback: null,
-          )
-      );
-    });
+  Question currentQuestion;
+  List<AbstractCustomRadioButton> items = [];
+  Function({required int id, required List<String> selectedAnswers}) answersCallback;
+
+  LastFieldAnswerPage({
+    Key? key,
+    required this.currentQuestion,
+    required this.answersCallback
+  }) : super(key: key) {
+    for (var element in currentQuestion.questionList) {
+      if (int.tryParse(element) != null) {
+        items.add(
+            CustomRadioButton(
+              size: 26,
+              text: element,
+              resetButtonsCallback: null,
+            )
+        );
+      } else {
+        items.add(
+            CustomRadioButtonWithText(
+              size: 26,
+              text: element,
+              resetButtonsCallback: null,
+              value: "",
+            )
+        );
+      }
+    }
   }
 
-  Question currentQuestion;
-  List<CustomRadioButtonWithText> items = [];
-
   @override
-  State createState() => _LastFieldAnswerPageState();
+  State createState() => _LastFieldAnswerPageState(items);
 
   @override
   List<String> getAnswers() {
@@ -37,17 +55,32 @@ class LastFieldAnswerPage extends StatefulWidget with AbstractAnswerPage {
 
 class _LastFieldAnswerPageState extends State<LastFieldAnswerPage> {
 
+  _LastFieldAnswerPageState(List<AbstractCustomRadioButton> items) {
+    items.forEach((element) {
+      if (element is CustomRadioButton) {
+        element.resetButtonsCallback = resetRadioButtons;
+      }
+      if (element is CustomRadioButtonWithText) {
+        element.resetButtonsCallback = resetRadioButtons;
+      }
+    });
+  }
+
   void resetRadioButtons(String text) {
     setState(() {
       for (var element in widget.items) {
-        element.isSelected = false;
+        element.unselect();
       }
 
-      widget.items.where((element) => element.text == text).first.isSelected = true;
+      widget.items.where((element) => element.getText() == text).first.select();
     });
 
     rebuildAllChildren(context);
 
+    widget.answersCallback.call(
+        id: widget.currentQuestion.id,
+        selectedAnswers: widget.items.where((element) => element.isSelected()).map((e) => e.getText()).toList()
+    );
   }
 
   void rebuildAllChildren(BuildContext context) {
