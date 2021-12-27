@@ -134,7 +134,7 @@ Widget whiteBoxContent(BuildContext context) {
                       "Введите email для отправки результатов (опционально)",
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 75),
+                    const SizedBox(height: 200),
                   ],
                 ),
               ],

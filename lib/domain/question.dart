@@ -5,6 +5,7 @@ class Question {
   String text;
   List<String> questionList;
   QuestionType questionType;
+  int prevQuestionId;
   int nextQuestionId;
   Map<String, int> nextQuestionMap;
 
@@ -13,6 +14,7 @@ class Question {
     required this.text,
     required this.questionList,
     required this.questionType,
+    required this.prevQuestionId,
     required this.nextQuestionId,
     required this.nextQuestionMap
   });

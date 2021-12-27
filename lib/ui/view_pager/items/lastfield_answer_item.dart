@@ -13,6 +13,8 @@ class CustomRadioButtonWithText extends AbstractCustomRadioButton {
   Function(String text)? resetButtonsCallback;
   String value;
 
+  TextEditingController controller = TextEditingController();
+
   CustomRadioButtonWithText({
     Key? key,
     required this.size,
@@ -55,9 +57,9 @@ class _CustomRadioButtonWithTextState extends State<CustomRadioButtonWithText> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      // onTap: () => {
-      //   widget.resetButtonsCallback?.call(widget.value)
-      // },
+      onTap: () => {
+        widget.resetButtonsCallback?.call(widget.value)
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,27 +85,28 @@ class _CustomRadioButtonWithTextState extends State<CustomRadioButtonWithText> {
           SizedBox(
             width: 100,
             child: TextField(
-              onChanged: (String value) => {
-                  widget.value = value,
-                  widget.resetButtonsCallback?.call(widget.value)
-                },
-                cursorColor: Colors.black,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                ],
-                keyboardType: const TextInputType.numberWithOptions(
-                    signed: false,
-                    decimal: true
-                ),
-                decoration: const InputDecoration(
-                  isDense: true,
-                  enabledBorder: UnderlineInputBorder(
-                    borderRadius: BorderRadius.zero,
-                    borderSide: BorderSide(color: Colors.blueAccent),
-                  ),
+              cursorColor: Colors.black,
+              controller: widget.controller
+                ..addListener(() {
+                  widget.value = widget.controller.text;
+                  widget.resetButtonsCallback?.call(widget.value);
+                }),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+              ],
+              keyboardType: const TextInputType.numberWithOptions(
+                  signed: false,
+                  decimal: true
+              ),
+              decoration: const InputDecoration(
+                isDense: true,
+                enabledBorder: UnderlineInputBorder(
+                  borderRadius: BorderRadius.zero,
+                  borderSide: BorderSide(color: Colors.blueAccent),
                 ),
               ),
             ),
+          ),
         ],
       ),
     );

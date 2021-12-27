@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:some_lessons_from_youtube/domain/answer.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
 import 'package:some_lessons_from_youtube/domain/question_type.dart';
@@ -40,6 +42,7 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository {
       text: e.text,
       questionList: e.answers.map((e) => e.text).toList(),
       questionType: e.typeAnswer.toQuestionType(),
+      prevQuestionId: resultFromApi.where((element) => e.nextQuestionId == e.id).first.id,
       nextQuestionId: e.nextQuestionId,
       nextQuestionMap: {
         for (var item in e.answers)
@@ -63,6 +66,7 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository {
             "Я веган"
           ],
           questionType: QuestionType.oneAnswer,
+          prevQuestionId: 1,
           nextQuestionId: 2,
           nextQuestionMap: {}
       ),
@@ -80,6 +84,7 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository {
             "Солнечные нагреватели воды"
           ],
           questionType: QuestionType.multipleAnswer,
+          prevQuestionId: 1,
           nextQuestionId: 3,
           nextQuestionMap: {}
       ),
@@ -95,6 +100,7 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository {
             "До 17500 км (как Москва–Веллингтон)"
           ],
           questionType: QuestionType.selectorsAnswer,
+          prevQuestionId: 2,
           nextQuestionId: 4,
           nextQuestionMap: {}
       ),
@@ -108,7 +114,8 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository {
             "Другое"
           ],
           questionType: QuestionType.lastFieldAnswer,
-          nextQuestionId: -1,
+          prevQuestionId: 3,
+          nextQuestionId: 4,
           nextQuestionMap: {}
       )
     ];

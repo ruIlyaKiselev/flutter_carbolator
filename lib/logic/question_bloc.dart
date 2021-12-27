@@ -15,9 +15,10 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
 
   final CarbolatorRepository _repository;
   List<Question> _questions = [];
-  int currentQuestion = -1;
+  Question? currentQuestion;
   Set<Answer> answers = {};
   String email = "";
+  bool firstFetched = false;
 
   final Logger _logger = Logger();
 
@@ -27,6 +28,7 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
       :
         _repository = carbolatorRepository,
         super(LoadingState()) {
+
     on<QuestionsFetchedEvent>(_onQuestionsFetched);
     on<NewAnswerEvent>(_onNewAnswer);
     on<SendAnswersEvent>(_onSendAnswers);
@@ -40,6 +42,7 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
     var questionsFromRepository = await _repository.getQuestions();
     if (questionsFromRepository != null && questionsFromRepository.isNotEmpty) {
       _questions = questionsFromRepository;
+      currentQuestion = _questions.first;
       emit(LoadedState());
     } else {
       emit(ErrorState());
@@ -50,7 +53,6 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
     answers.removeWhere((element) => element.id == event.answer.id);
     answers.add(event.answer);
     _logger.d("${event.answer.id} ${event.answer.selectedAnswers}");
-    var question = _questions[currentQuestion];
   }
 
   FutureOr<void> _onSendAnswers(SendAnswersEvent event, Emitter<QuestionState> state) async {
@@ -67,12 +69,16 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
   }
 
   FutureOr<void> _onNextQuestion(NextQuestionEvent event, Emitter<QuestionState> emit) {
-    if (currentQuestion < _questions.length - 1) {
-      currentQuestion++;
+    if (currentQuestion?.id != currentQuestion?.nextQuestionId) {
+      if (firstFetched) {
+        currentQuestion = _questions.where((element) => element.id == currentQuestion?.nextQuestionId).first;
+      }
+      firstFetched = true;
+
       emit(
           QuestionLoadedState(
-              question: _questions[currentQuestion],
-              storedAnswers: answers.firstWhere((element) => element.id == _questions[currentQuestion].id,
+              question: currentQuestion!,
+              storedAnswers: answers.firstWhere((element) => element.id == currentQuestion!.id,
                   orElse: () => Answer(id: 0, selectedAnswers: [])
               ).selectedAnswers
           )
@@ -85,12 +91,12 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
   }
 
   FutureOr<void> _onPrevQuestion(PrevQuestionEvent event, Emitter<QuestionState> emit) {
-    if (currentQuestion > 0) {
-      currentQuestion--;
+    if (currentQuestion?.id != currentQuestion?.prevQuestionId) {
+      currentQuestion = _questions.where((element) => element.id == currentQuestion?.prevQuestionId).first;
       emit(
           QuestionLoadedState(
-              question: _questions[currentQuestion],
-              storedAnswers: answers.firstWhere((element) => element.id == _questions[currentQuestion].id,
+              question: currentQuestion!,
+              storedAnswers: answers.firstWhere((element) => element.id == currentQuestion!.id,
                   orElse: () => Answer(id: 0, selectedAnswers: [])
               ).selectedAnswers
           )
