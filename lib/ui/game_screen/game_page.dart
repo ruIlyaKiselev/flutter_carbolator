@@ -78,12 +78,13 @@ Widget whiteBoxContent(BuildContext context) {
           child: Container(
             width: double.infinity,
             height: double.infinity,
+            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.height),
             margin: const EdgeInsets.only(
-                left: 20,
-                right: 20,
-                bottom: 50
+                left: 16,
+                right: 16,
+                bottom: 10
             ),
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(
                   Radius.circular(16)
@@ -110,7 +111,7 @@ Widget whiteBoxContent(BuildContext context) {
             margin: const EdgeInsets.only(
                 left: 20,
                 right: 20,
-                bottom: 50
+                bottom: 10
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -121,15 +122,18 @@ Widget whiteBoxContent(BuildContext context) {
                 ),
                 Container(
                   width: double.infinity,
+                  constraints: const BoxConstraints(maxWidth: 300),
                   padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20
+                      left: 16,
+                      right: 16
                   ),
                   child: TextButton(
                     onPressed: () => {
                       Navigator.of(context).pushReplacementNamed(
                           "/finish"
-                      )
+                      ),
+                      context.read<QuestionBloc>()
+                        ..add(SendAnswersEvent())
                     },
                     style: TextButton.styleFrom(
                         primary: const Color(0xFF4f4f4f),
@@ -154,7 +158,7 @@ Widget whiteBoxContent(BuildContext context) {
                   padding: const EdgeInsets.only(
                       left: 8,
                       right: 8,
-                      bottom: 50
+                      bottom: 10
                   ),
                   child: TextButton(
                     style: TextButton.styleFrom(
@@ -172,7 +176,7 @@ Widget whiteBoxContent(BuildContext context) {
                         ),
                       ),
                     ),
-                    onPressed:() async => {
+                    onPressed:() => {
                       context.read<QuestionBloc>().add(PrevQuestionEvent())
                     },
                   ),
@@ -242,12 +246,6 @@ class QuestionsWidget extends StatefulWidget {
 }
 
 class _QuestionsWidgetState extends State<QuestionsWidget> {
-  final PageController pageController = PageController();
-  int currentPageIndex = 0;
-  late final PageController _controller = PageController(initialPage: 0);
-
-  PageController get controller => _controller;
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<QuestionBloc, QuestionState>(
@@ -263,8 +261,9 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                               id: id,
                               selectedAnswers: selectedAnswers
                           )
-                      )
+                      ),
                   ),
+              storedAnswers: questionState.storedAnswers ?? []
             );
             case QuestionType.multipleAnswer: return MultipleAnswerPage(
               currentQuestion: questionState.question,
@@ -277,6 +276,7 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                           )
                       )
                   ),
+              storedAnswers: questionState.storedAnswers ?? []
             );
             case QuestionType.selectorsAnswer: return SelectorAnswerPage(
                 currentQuestion: questionState.question,
@@ -288,7 +288,8 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                                 selectedAnswers: selectedAnswers
                             )
                         )
-                    )
+                    ),
+              storedAnswers: questionState.storedAnswers ?? []
             );
             case QuestionType.lastFieldAnswer: return LastFieldAnswerPage(
                 currentQuestion: questionState.question,
@@ -300,7 +301,8 @@ class _QuestionsWidgetState extends State<QuestionsWidget> {
                             selectedAnswers: selectedAnswers
                         )
                     )
-                )
+                ),
+              storedAnswers: questionState.storedAnswers ?? []
             );
           }
         }

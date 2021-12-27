@@ -9,11 +9,13 @@ class OneAnswerPage extends StatefulWidget with AbstractAnswerPage {
   Question currentQuestion;
   List<CustomRadioButton> items = [];
   Function({required int id, required List<String> selectedAnswers}) answersCallback;
+  List<String> storedAnswers;
 
   OneAnswerPage({
     Key? key,
     required this.currentQuestion,
     required this.answersCallback,
+    required this.storedAnswers
   }) : super(key: key) {
     for (var element in currentQuestion.questionList) {
       items.add(
@@ -21,6 +23,7 @@ class OneAnswerPage extends StatefulWidget with AbstractAnswerPage {
             size: 26,
             text: element,
             resetButtonsCallback: null,
+            selected: storedAnswers.contains(element),
           )
       );
     }
@@ -86,21 +89,33 @@ class _OneAnswerPageState extends State<OneAnswerPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          widget.currentQuestion.text,
-          style: const TextStyle(
-              fontFamily: "Montserrat",
-              color: Color(0xFF4f4f4f),
-              fontWeight: FontWeight.w800,
-              fontSize: 22
-          ),
-          textAlign: TextAlign.center,
-        ),
+        // Text(
+        //   widget.currentQuestion.text,
+        //   style: const TextStyle(
+        //       fontFamily: "Montserrat",
+        //       color: Color(0xFF4f4f4f),
+        //       fontWeight: FontWeight.w800,
+        //       fontSize: 22
+        //   ),
+        //   textAlign: TextAlign.center,
+        // ),
         Expanded(
           child: ListView.builder(
-            itemCount: widget.items.length,
+            itemCount: widget.items.length + 1,
             itemBuilder: (BuildContext context, int index) {
-              return widget.items[index];
+              if (index == 0) {
+                return Text(
+                  widget.currentQuestion.text,
+                  style: const TextStyle(
+                      fontFamily: "Montserrat",
+                      color: Color(0xFF4f4f4f),
+                      fontWeight: FontWeight.w800,
+                      fontSize: 22
+                  ),
+                  textAlign: TextAlign.center,
+                );
+              }
+              return widget.items[index - 1];
             },
           ),
         )

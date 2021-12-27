@@ -17,10 +17,12 @@ class NewAnswerEvent extends QuestionEvent {
   });
 }
 
-class SendAnswersEvent extends QuestionEvent {
-  final List<Answer> answers;
+class SendAnswersEvent extends QuestionEvent {}
 
-  SendAnswersEvent({
-    required this.answers
+class SendEmailEvent extends QuestionEvent {
+  final String email;
+
+  SendEmailEvent({
+    required this.email
   });
 }

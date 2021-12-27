@@ -21,6 +21,7 @@ dependencies:
   dart_json_mapper: ^2.1.17
   equatable: ^2.0.3
   dio: ^4.0.4
+  share_plus: ^3.0.4
 
 dev_dependencies:
   flutter_test:

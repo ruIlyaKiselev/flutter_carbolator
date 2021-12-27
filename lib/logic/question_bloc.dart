@@ -6,7 +6,6 @@ import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';
 import 'package:some_lessons_from_youtube/domain/answer.dart';
 import 'package:some_lessons_from_youtube/domain/question.dart';
-import 'package:some_lessons_from_youtube/domain/question_type.dart';
 import 'package:some_lessons_from_youtube/repository/carbolator_repository.dart';
 
 part 'question_event.dart';
@@ -16,8 +15,9 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
 
   final CarbolatorRepository _repository;
   List<Question> _questions = [];
-  int currentQuestion = 0;
+  int currentQuestion = -1;
   Set<Answer> answers = {};
+  String email = "";
 
   final Logger _logger = Logger();
 
@@ -30,6 +30,7 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
     on<QuestionsFetchedEvent>(_onQuestionsFetched);
     on<NewAnswerEvent>(_onNewAnswer);
     on<SendAnswersEvent>(_onSendAnswers);
+    on<SendEmailEvent>(_onSendEmail);
     on<NextQuestionEvent>(_onNextQuestion);
     on<PrevQuestionEvent>(_onPrevQuestion);
   }
@@ -46,38 +47,39 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
   }
 
   FutureOr<void> _onNewAnswer(NewAnswerEvent event, Emitter<QuestionState> state) async {
-    // emit(
-    //     QuestionLoadedState(
-    //       question: Question(
-    //         id: 0,
-    //         text: "",
-    //         questionList: [],
-    //         questionType: QuestionType.oneAnswer,
-    //         nextQuestionId: 0,
-    //         nextQuestionMap: {}
-    //       )
-    //     )
-    // );
-
+    answers.removeWhere((element) => element.id == event.answer.id);
     answers.add(event.answer);
     _logger.d("${event.answer.id} ${event.answer.selectedAnswers}");
+    var question = _questions[currentQuestion];
   }
 
-  FutureOr<void> _onSendAnswers(SendAnswersEvent event, Emitter<QuestionState> state) {
+  FutureOr<void> _onSendAnswers(SendAnswersEvent event, Emitter<QuestionState> state) async {
+    try {
+      var results = await _repository.postAnswers(answers.toList());
+      emit(AnswersDeliveredSuccessfullyState(results: results));
+    } catch (_) {
+      emit(AnswersDeliveredUnsuccessfullyState());
+    }
+  }
 
+  FutureOr<void> _onSendEmail(SendEmailEvent event, Emitter<QuestionState> state) {
+    email = event.email;
   }
 
   FutureOr<void> _onNextQuestion(NextQuestionEvent event, Emitter<QuestionState> emit) {
-    if (currentQuestion < _questions.length) {
+    if (currentQuestion < _questions.length - 1) {
+      currentQuestion++;
       emit(
           QuestionLoadedState(
-              question: _questions[currentQuestion]
+              question: _questions[currentQuestion],
+              storedAnswers: answers.firstWhere((element) => element.id == _questions[currentQuestion].id,
+                  orElse: () => Answer(id: 0, selectedAnswers: [])
+              ).selectedAnswers
           )
       );
-      currentQuestion++;
     } else {
       emit(
-        QuestionsFinishedState()
+          QuestionsFinishedState()
       );
     }
   }
@@ -87,7 +89,10 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
       currentQuestion--;
       emit(
           QuestionLoadedState(
-              question: _questions[currentQuestion]
+              question: _questions[currentQuestion],
+              storedAnswers: answers.firstWhere((element) => element.id == _questions[currentQuestion].id,
+                  orElse: () => Answer(id: 0, selectedAnswers: [])
+              ).selectedAnswers
           )
       );
     }

@@ -12,6 +12,7 @@ class CustomSelector extends StatefulWidget {
   String secondText;
   double size;
   Function()? resetButtonsCallback;
+  int? storedValue;
 
   CustomSelector({
     Key? key,
@@ -20,8 +21,11 @@ class CustomSelector extends StatefulWidget {
     required this.max,
     required this.text,
     required this.secondText,
-    required this.resetButtonsCallback
-  }) : super(key: key) {currentNumber = min;}
+    required this.resetButtonsCallback,
+    required this.storedValue
+  }) : super(key: key) {
+    currentNumber = storedValue ?? min;
+  }
 
   void incrementCurrentNumber() {
     if (currentNumber + 1 <= max) {

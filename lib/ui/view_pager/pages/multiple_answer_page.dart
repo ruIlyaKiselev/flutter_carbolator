@@ -9,18 +9,21 @@ class MultipleAnswerPage extends StatefulWidget with AbstractAnswerPage  {
   Question currentQuestion;
   List<CustomCheckBox> items = [];
   Function({required int id, required List<String> selectedAnswers}) answersCallback;
+  List<String> storedAnswers;
 
   MultipleAnswerPage({
     Key? key,
     required this.currentQuestion,
-    required this.answersCallback
+    required this.answersCallback,
+    required this.storedAnswers,
   }) : super(key: key) {
     currentQuestion.questionList.forEach((element) {
       items.add(
           CustomCheckBox(
             size: 26,
             text: element,
-            resetButtonsCallback: null
+            resetButtonsCallback: null,
+            isSelected: storedAnswers.contains(element),
           )
       );
     });
@@ -76,21 +79,33 @@ class _MultipleAnswerPageState extends State<MultipleAnswerPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          widget.currentQuestion.text,
-          style: const TextStyle(
-              fontFamily: "Montserrat",
-              color: Color(0xFF4f4f4f),
-              fontWeight: FontWeight.w800,
-              fontSize: 22
-          ),
-          textAlign: TextAlign.center,
-        ),
+        // Text(
+        //   widget.currentQuestion.text,
+        //   style: const TextStyle(
+        //       fontFamily: "Montserrat",
+        //       color: Color(0xFF4f4f4f),
+        //       fontWeight: FontWeight.w800,
+        //       fontSize: 22
+        //   ),
+        //   textAlign: TextAlign.center,
+        // ),
         Expanded(
           child: ListView.builder(
-            itemCount: widget.items.length,
+            itemCount: widget.items.length + 1,
             itemBuilder: (BuildContext context, int index) {
-              return widget.items[index];
+              if (index == 0) {
+                return Text(
+                  widget.currentQuestion.text,
+                  style: const TextStyle(
+                      fontFamily: "Montserrat",
+                      color: Color(0xFF4f4f4f),
+                      fontWeight: FontWeight.w800,
+                      fontSize: 22
+                  ),
+                  textAlign: TextAlign.center,
+                );
+              }
+              return widget.items[index - 1];
             },
           ),
         )

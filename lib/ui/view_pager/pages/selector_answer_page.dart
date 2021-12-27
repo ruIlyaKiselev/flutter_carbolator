@@ -9,11 +9,13 @@ class SelectorAnswerPage extends StatefulWidget with AbstractAnswerPage {
   Question currentQuestion;
   List<CustomSelector> items = [];
   Function({required int id, required List<String> selectedAnswers}) answersCallback;
+  List<String> storedAnswers;
 
   SelectorAnswerPage({
     Key? key,
     required this.currentQuestion,
     required this.answersCallback,
+    required this.storedAnswers
   }) : super(key: key) {
     currentQuestion.questionList.forEach((element) {
       items.add(
@@ -24,6 +26,7 @@ class SelectorAnswerPage extends StatefulWidget with AbstractAnswerPage {
             text: element,
             secondText: "",
             resetButtonsCallback: null,
+            storedValue: _getStoredValue(element, storedAnswers)
           )
       );
     });
@@ -47,6 +50,20 @@ class SelectorAnswerPage extends StatefulWidget with AbstractAnswerPage {
   int getId() {
     return currentQuestion.id;
   }
+
+  int _getStoredValue(String text, List<String> storedValues) {
+    int? result;
+
+    storedValues.forEach((element) {
+      if (element.startsWith(text)) {
+
+        String substring = element.substring(element.indexOf(": ") + 2, element.length);
+        result =  int.tryParse(substring);
+      }
+    });
+
+    return result ?? 0;
+  }
 }
 
 class _SelectorAnswerPageState extends State<SelectorAnswerPage> {
@@ -68,21 +85,33 @@ class _SelectorAnswerPageState extends State<SelectorAnswerPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          widget.currentQuestion.text,
-          style: const TextStyle(
-              fontFamily: "Montserrat",
-              color: Color(0xFF4f4f4f),
-              fontWeight: FontWeight.w800,
-              fontSize: 22
-          ),
-          textAlign: TextAlign.center,
-        ),
+        // Text(
+        //   widget.currentQuestion.text,
+        //   style: const TextStyle(
+        //       fontFamily: "Montserrat",
+        //       color: Color(0xFF4f4f4f),
+        //       fontWeight: FontWeight.w800,
+        //       fontSize: 22
+        //   ),
+        //   textAlign: TextAlign.center,
+        // ),
         Expanded(
           child: ListView.builder(
-            itemCount: widget.items.length,
+            itemCount: widget.items.length + 1,
             itemBuilder: (BuildContext context, int index) {
-              return widget.items[index];
+              if (index == 0) {
+                return Text(
+                  widget.currentQuestion.text,
+                  style: const TextStyle(
+                      fontFamily: "Montserrat",
+                      color: Color(0xFF4f4f4f),
+                      fontWeight: FontWeight.w800,
+                      fontSize: 22
+                  ),
+                  textAlign: TextAlign.center,
+                );
+              }
+              return widget.items[index - 1];
             },
           ),
         )

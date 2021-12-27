@@ -22,13 +22,9 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository {
   }
 
   @override
-  Future<void> postAnswers(List<Answer> answers) async {
-    _apiProvider.postAnswers(answers.map((e) =>
-        AnswersStoreDto(
-            questionId: e.id,
-            answers: e.selectedAnswers
-        )
-    ).toList());
+  Future<List<String>> postAnswers(List<Answer> answers) async {
+    // return await _postAnswersToApi(answers);
+    return await _postAnswersGenerated(answers);
   }
 
   @override
@@ -118,6 +114,45 @@ class CarbolatorRepositoryImpl implements CarbolatorRepository {
     ];
 
     return result;
+  }
+
+  Future<List<String>> _postAnswersToApi(List<Answer> answers) async {
+    var result = await _apiProvider.postAnswers(answers.map((e) =>
+        AnswersStoreDto(
+            questionId: e.id,
+            answers: e.selectedAnswers
+        )
+    ).toList());
+
+    return result ?? [];
+  }
+
+  Future<List<String>> _postAnswersGenerated(List<Answer> answers) async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    return [
+      "23.01",
+      "2.00",
+      "1.01",
+      "1.00",
+      "1.50",
+      "2.00",
+      "0.50",
+      "1.00",
+      "1.00",
+      "1.33",
+      "2.00",
+      "1.00",
+      "0.66",
+      "1.20",
+      "1.40",
+      "0.80",
+      "0.90",
+      "0.70",
+      "1.00",
+      "0.00",
+      "1.00"
+    ];
   }
 
 }

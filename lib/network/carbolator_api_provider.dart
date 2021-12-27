@@ -18,10 +18,10 @@ class CarbolatorApiProvider {
     return JsonMapper.fromMap<List<QuestionDto>>(saveRequest?.data);
   }
 
-  Future<List<AnswersStoreDto>?> postAnswers(List<AnswersStoreDto> answers) async {
+  Future<List<String>?> postAnswers(List<AnswersStoreDto> answers) async {
     logger.d("postAnswers requesting");
     final saveRequest = await api.post("/answers", JsonMapper.serialize(answers));
     logger.d("postAnswers response: ${saveRequest?.statusCode}");
-    return JsonMapper.deserialize<List<AnswersStoreDto>>(saveRequest?.data);
+    return JsonMapper.deserialize<List<String>>(saveRequest?.data);
   }
 }

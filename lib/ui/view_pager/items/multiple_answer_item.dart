@@ -14,7 +14,8 @@ class CustomCheckBox extends StatefulWidget {
     Key? key,
     required this.size,
     required this.text,
-    required this.resetButtonsCallback
+    required this.resetButtonsCallback,
+    required this.isSelected
   }) : super(key: key);
 
   @override

@@ -2,27 +2,25 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:some_lessons_from_youtube/ui/view_pager/Items/abstract_custom_radio_button.dart';
 
-class CustomRadioButtonWithText extends AbstractCustomRadioButton  {
+class CustomRadioButton extends AbstractCustomRadioButton {
 
   bool selected = false;
   String text;
   double size;
   Function(String text)? resetButtonsCallback;
-  String value;
 
-  CustomRadioButtonWithText({
+  CustomRadioButton({
     Key? key,
     required this.size,
     required this.text,
     required this.resetButtonsCallback,
-    required this.value,
+    required this.selected,
   }) : super(key: key);
 
   @override
-  State createState() => _CustomRadioButtonWithTextState();
+  State createState() => _CustomRadioButtonState();
 
   @override
   bool isSelected() {
@@ -31,7 +29,7 @@ class CustomRadioButtonWithText extends AbstractCustomRadioButton  {
 
   @override
   String getText() {
-    return value;
+    return text;
   }
 
   @override
@@ -50,18 +48,16 @@ class CustomRadioButtonWithText extends AbstractCustomRadioButton  {
   }
 }
 
-class _CustomRadioButtonWithTextState extends State<CustomRadioButtonWithText> {
-
-  TextEditingController controller = TextEditingController();
+class _CustomRadioButtonState extends State<CustomRadioButton> {
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => {
-        widget.resetButtonsCallback?.call(widget.value)
+        widget.resetButtonsCallback?.call(widget.text)
       },
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -69,51 +65,21 @@ class _CustomRadioButtonWithTextState extends State<CustomRadioButtonWithText> {
             size: Size(widget.size, widget.size),
             painter: RadioButtonPainter(isSelected: widget.selected),
           ),
-          Container(
-            padding: EdgeInsets.all(widget.size / 4),
-            child: Text(
-              widget.text,
-              style: TextStyle(
-                  fontFamily: "Montserrat",
-                  color: const Color(0xFF4f4f4f),
-                  fontWeight: FontWeight.w800,
-                  fontSize: widget.size * 2 / 3
-              ),
-              textAlign: TextAlign.start,
-            ),
-          ),
-          SizedBox(
-            width: 100,
-            child: GestureDetector(
-              onTap: () {
-                FocusScopeNode currentFocus = FocusScope.of(context);
-                if (!currentFocus.hasFocus) {
-                  currentFocus.unfocus();
-                }
-              },
-              child: TextFormField(
-                controller: controller..addListener(() {
-                  widget.value = controller.text.toString();
-                  widget.resetButtonsCallback?.call(widget.value);
-                }),
-                cursorColor: Colors.black,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                ],
-                keyboardType: const TextInputType.numberWithOptions(
-                    signed: false,
-                    decimal: true
-                ),
-                decoration: const InputDecoration(
-                  isDense: true,
-                  enabledBorder: UnderlineInputBorder(
-                    borderRadius: BorderRadius.zero,
-                    borderSide: BorderSide(color: Colors.blueAccent),
+          Expanded(
+              child: Container(
+                padding: EdgeInsets.all(widget.size / 4),
+                child: Text(
+                  widget.text,
+                  style: TextStyle(
+                      fontFamily: "Montserrat",
+                      color: const Color(0xFF4f4f4f),
+                      fontWeight: FontWeight.w800,
+                      fontSize: widget.size * 2 / 3
                   ),
+                  textAlign: TextAlign.start,
                 ),
-              ),
-            ),
-          ),
+              )
+          )
         ],
       ),
     );
